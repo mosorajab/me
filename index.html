@@ -12,11 +12,13 @@
 </head>
 <body>
 
+<div class="scroll-progress" id="progress" aria-hidden="true"></div>
+
 <!-- ============================ NAV ============================ -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
     <a class="brand" href="#top" aria-label="Mohamed Sohail Rajab — home">
-      <span class="mark" aria-hidden="true"><i></i><i class="a"></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i></i></span>
+      <span class="mark" id="navMark" aria-hidden="true"><i></i><i class="a"></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i></i></span>
       <span class="name">M.&nbsp;S.&nbsp;Rajab</span>
     </a>
     <div class="nav-links" id="navlinks">
@@ -53,6 +55,7 @@
 
   <!-- ============================ HERO ============================ -->
   <section class="hero" id="hero" data-screen-label="Hero">
+    <div class="hero-bg" aria-hidden="true"></div>
     <div class="hero-eyebrow reveal">
       <span class="dot" aria-hidden="true"></span>
       <span class="mono-label">Portfolio — Edition 2026</span>
@@ -60,7 +63,7 @@
     </div>
 
     <div class="hero-grid">
-      <h1 class="hero-headline reveal" data-d="1">
+      <h1 class="hero-headline" id="heroHeadline">
         Machine learning, applied&nbsp;AI,<br />
         and the software <em class="ink-accent">around</em> it.
       </h1>
@@ -69,7 +72,7 @@
       </p>
     </div>
 
-    <div class="hero-meta reveal" data-d="3">
+    <div class="hero-meta" data-stagger data-stagger-offset="6">
       <div class="cell">
         <span class="mono-label k">Role</span>
         <span class="v">Machine Learning Engineer<br /><span style="color:var(--ink-2)">@ Derivco</span></span>
@@ -80,7 +83,8 @@
       </div>
       <div class="cell">
         <span class="mono-label k">Education</span>
-        <span class="v">Hons, Data Analytics<br /><span style="color:var(--ink-2)">Cum Laude</span></span>
+        <span class="v">Hons, Data Analytics
+Cum Laude</span>
       </div>
       <div class="cell">
         <span class="mono-label k">Find me</span>
@@ -120,7 +124,7 @@
         <p>
           The thread through all of it is craft. I'm drawn to things that are engineered to last and rewarding to use, which is probably why, away from the keyboard, I'm usually found with a fountain pen, a mechanical watch, or a good book in reach.
         </p>
-        <div class="about-tags">
+        <div class="about-tags" data-stagger data-stagger-step="55">
           <span class="tag">Applied ML</span>
           <span class="tag">Production Systems</span>
           <span class="tag">Data Science</span>
@@ -141,7 +145,7 @@
       </div>
     </div>
 
-    <div class="reveal">
+    <div data-stagger data-stagger-step="90">
       <div class="cv-row">
         <span class="yr">2025 — Now</span>
         <span class="role">Founder &amp; ML Lead</span>
@@ -165,12 +169,11 @@
       <div class="cv-row">
         <span class="yr">2020 — 2022</span>
         <span class="role">BCad, Computer Science majoring in Application Development</span>
-        <span class="org">Graduated Cum Laude
-SOFTWARE ENGINEERING
-</span>
+        <span class="org">Graduated Cum Laude<span class="place">Software Engineering</span></span>
         <span class="note">Foundations in building &amp; shipping software.</span>
       </div>
     </div>
+
   </section>
 
   <!-- ============================ MOSAIC SYSTEMS ============================ -->
@@ -215,7 +218,7 @@ SOFTWARE ENGINEERING
 
     <p class="proj-intro reveal">Things I build at home: mostly to <em>learn by doing</em>, and because hardware is its own kind of craft.</p>
 
-    <div class="proj-grid reveal" data-d="1">
+    <div class="proj-grid" data-stagger data-stagger-step="110">
       <article class="proj-card">
         <div class="proj-body">
           <div class="proj-top">
@@ -263,7 +266,7 @@ SOFTWARE ENGINEERING
       </div>
     </div>
 
-    <div class="reveal">
+    <div data-stagger data-stagger-step="80">
       <a class="article" href="https://medium.com/@mosorr/ai-unleashed-inside-nvidias-game-changing-gtc-2025-breakthroughs-and-the-future-of-intelligent-ffad9714666e" target="_blank" rel="noopener">
         <span class="date">19 Mar 2025</span>
         <span class="head">
@@ -314,7 +317,7 @@ SOFTWARE ENGINEERING
 
     <p class="coll-intro reveal">The same eye for <em>mechanism and material</em> that I bring to engineering, applied to things I keep.</p>
 
-    <div class="coll-grid reveal" data-d="1">
+    <div class="coll-grid" data-stagger data-stagger-step="80">
       <div class="coll-cell">
         <span class="num">01</span>
         <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19l9-9 3 3-9 9H5v-3z"/><path d="M14 10l2-2 3 3-2 2"/></svg></span>
@@ -352,8 +355,7 @@ SOFTWARE ENGINEERING
         <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h6v16H6a2 2 0 00-2 2V5z"/><path d="M20 5a2 2 0 00-2-2h-6v16h6a2 2 0 012 2V5z"/></svg></span>
         <div>
           <div class="c-name">Books</div>
-          <div class="c-desc">Margins, markups
-&amp; slow reading</div>
+          <div class="c-desc">Margins, markups<br />&amp; slow reading</div>
         </div>
       </div>
     </div>
@@ -370,7 +372,7 @@ SOFTWARE ENGINEERING
 
     <div class="contact-grid">
       <h2 class="contact-head reveal">Let's make<br />something <em>considered.</em></h2>
-      <div class="contact-links reveal" data-d="1">
+      <div class="contact-links" data-stagger data-stagger-step="75">
         <a href="https://www.linkedin.com/in/mohamedsohailrajab/" target="_blank" rel="noopener">
           <span class="n">01</span><span>LinkedIn — /mohamedsohailrajab</span><span class="h">↗</span>
         </a>
