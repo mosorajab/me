@@ -9,6 +9,7 @@
   /* ---- nav scrolled state + scroll progress -------------------------- */
   var nav = document.getElementById("nav");
   var prog = document.getElementById("progress");
+  var heroBg = document.querySelector(".hero-bg");
   var docEl = document.documentElement;
   function onScroll() {
     var y = window.scrollY || docEl.scrollTop;
@@ -16,6 +17,14 @@
     if (prog) {
       var max = docEl.scrollHeight - docEl.clientHeight;
       prog.style.transform = "scaleX(" + (max > 0 ? Math.min(1, y / max) : 0) + ")";
+    }
+    /* subtle hero grid parallax */
+    if (heroBg) {
+      if (reduce || document.body.classList.contains("no-motion")) {
+        heroBg.style.transform = "";
+      } else if (y < window.innerHeight * 1.2) {
+        heroBg.style.transform = "translate3d(0," + (y * 0.14).toFixed(1) + "px,0)";
+      }
     }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -50,7 +59,7 @@
       } else if (node.nodeName === "BR") {
         out.push("<br />");
       } else {
-        out.push('<span class="word"><span>' + node.outerHTML + "</span></span> ");
+        out.push('<span class="word word-accent"><span>' + node.outerHTML + "</span></span> ");
       }
     });
     hl.innerHTML = out.join("");
@@ -138,6 +147,32 @@
       if (collGrid.getBoundingClientRect().top < (window.innerHeight || 800) * 0.95) drawIt();
       else cio.observe(collGrid);
       setTimeout(drawIt, 3200);
+    }
+  }
+
+  /* ---- mosaic logo glyph: builds tile-by-tile when in view ----------- */
+  var mGlyph = document.getElementById("mosaicGlyph");
+  if (mGlyph) {
+    if (reduce) {
+      mGlyph.classList.add("live");
+    } else {
+      mGlyph.classList.add("build");
+      var fireGlyph = function () {
+        if (mGlyph._done) return; mGlyph._done = true;
+        void mGlyph.offsetWidth;
+        mGlyph.classList.add("go");
+        setTimeout(function () { mGlyph.classList.add("live"); }, 900);
+      };
+      if ("IntersectionObserver" in window) {
+        var gio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) { fireGlyph(); gio.unobserve(e.target); } });
+        }, { threshold: 0.4 });
+        if (mGlyph.getBoundingClientRect().top < (window.innerHeight || 800) * 0.85) fireGlyph();
+        else gio.observe(mGlyph);
+        setTimeout(fireGlyph, 4000);
+      } else {
+        fireGlyph();
+      }
     }
   }
 
