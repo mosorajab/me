@@ -146,7 +146,7 @@
       var k = Math.floor((W - (e.clientX - b.left)) / S), r = Math.floor((e.clientY - b.top) / S);
       return k >= 0 && r >= 0 ? k + "," + r : null;
     }
-    function onText(e) { return !!e.target.closest("a, button, h1, h2, p, .hero-meta, .hero-eyebrow"); }
+    function onText(e) { return !!e.target.closest("a, button, h1, h2, p, .hero-links, .hero-eyebrow"); }
     function markTouched(v) {
       touched = v;
       if (!hint) return;
