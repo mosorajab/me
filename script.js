@@ -9,7 +9,7 @@
   /* ---- nav scrolled state + scroll progress -------------------------- */
   var nav = document.getElementById("nav");
   var prog = document.getElementById("progress");
-  var heroBg = document.querySelector(".hero-bg");
+  var heroLayers = qsa("[data-parallax]");
   var docEl = document.documentElement;
   function onScroll() {
     var y = window.scrollY || docEl.scrollTop;
@@ -19,13 +19,13 @@
       prog.style.transform = "scaleX(" + (max > 0 ? Math.min(1, y / max) : 0) + ")";
     }
     /* subtle hero grid parallax */
-    if (heroBg) {
+    heroLayers.forEach(function (el) {
       if (reduce || document.body.classList.contains("no-motion")) {
-        heroBg.style.transform = "";
+        el.style.transform = "";
       } else if (y < window.innerHeight * 1.2) {
-        heroBg.style.transform = "translate3d(0," + (y * 0.14).toFixed(1) + "px,0)";
+        el.style.transform = "translate3d(0," + (y * 0.14).toFixed(1) + "px,0)";
       }
-    }
+    });
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
@@ -44,6 +44,149 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
     window.addEventListener("resize", function () { if (window.innerWidth > 900) setMenu(false); }, { passive: true });
   }
+
+  /* ---- keyboard: 1–7 jump to sections -------------------------------- */
+  var jumpTo = ["about", "work", "mosaic", "projects", "writing", "collections", "contact"];
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    var n = parseInt(e.key, 10);
+    var sec = n >= 1 && n <= jumpTo.length && document.getElementById(jumpTo[n - 1]);
+    if (!sec) return;
+    e.preventDefault();
+    sec.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+  });
+
+  /* ---- hero mosaic: the brand mark on the grid, lit by the pointer --- */
+  (function heroTiles() {
+    var hero = document.getElementById("hero");
+    var cvs = document.getElementById("heroTiles");
+    var hint = document.getElementById("heroHint");
+    if (!hero || !cvs || !cvs.getContext) return;
+    var ctx = cvs.getContext("2d");
+    var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    var MARK = [0, 1, 0, 0, 0, 1, 1, 0, 0];   // same pattern as the nav mark; 1 = accent
+    var W = 0, H = 0, S = 0, dpr = 1, on = false, raf = 0;
+    var placed = {}, heat = {}, hoverKey = null, touched = false;
+    var ink, accent;
+
+    function readColors() {
+      var cs = getComputedStyle(document.documentElement);
+      ink = cs.getPropertyValue("--ink").trim();
+      accent = cs.getPropertyValue("--accent").trim();
+    }
+    // cells are counted from the right edge (k) and top (r), matching the
+    // CSS grid on .hero-bg, which is anchored right/top
+    function setMark(start) {
+      placed = {};
+      MARK.forEach(function (v, i) {
+        placed[(3 - i % 3) + "," + (1 + Math.floor(i / 3))] = { v: v ? 2 : 1, t: reduce ? -1e9 : start + i * 70 };
+      });
+    }
+    function cell(k, r) { return [W - (k + 1) * S + 1, r * S + 1, S - 1, S - 1]; }
+    // same falloff as the radial mask on .hero-bg, so the trail fades with the grid
+    function mask(x, y) {
+      var dx = (x - 0.82 * W) / (1.2 * W), dy = (y - 0.14 * H) / (0.8 * H);
+      var d = Math.sqrt(dx * dx + dy * dy);
+      return d <= 0.22 ? 1 : d >= 0.72 ? 0 : 1 - (d - 0.22) / 0.5;
+    }
+    function ease(p) { return 1 - Math.pow(1 - p, 3); }
+
+    function draw(now) {
+      var busy = false;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = ink;
+      Object.keys(heat).forEach(function (key) {
+        var h = heat[key];
+        if (h < 0.02) { delete heat[key]; return; }
+        var p = key.split(","), c = cell(+p[0], +p[1]);
+        ctx.globalAlpha = 0.055 * h * mask(c[0] + c[2] / 2, c[1] + c[3] / 2);
+        ctx.fillRect(c[0], c[1], c[2], c[3]);
+        if (key !== hoverKey) { heat[key] = h * 0.92; busy = true; }
+      });
+      Object.keys(placed).forEach(function (key) {
+        var tile = placed[key], p = key.split(","), c = cell(+p[0], +p[1]);
+        var prog = Math.max(0, Math.min(1, (now - tile.t) / 520));
+        if (prog < 1) busy = true;
+        if (prog <= 0) return;
+        var s = c[2] * ease(prog), o = (c[2] - s) / 2;
+        ctx.globalAlpha = prog * (tile.v === 2 ? 0.94 : 0.075);
+        ctx.fillStyle = tile.v === 2 ? accent : ink;
+        ctx.fillRect(c[0] + o, c[1] + o, s, s);
+      });
+      if (hoverKey) {
+        var hp = hoverKey.split(","), hc = cell(+hp[0], +hp[1]);
+        ctx.globalAlpha = 0.9 * Math.max(mask(hc[0] + hc[2] / 2, hc[1] + hc[3] / 2), placed[hoverKey] ? 1 : 0);
+        ctx.strokeStyle = accent; ctx.lineWidth = 1;
+        ctx.strokeRect(hc[0] + 0.5, hc[1] + 0.5, hc[2] - 1, hc[3] - 1);
+      }
+      ctx.globalAlpha = 1;
+      return busy;
+    }
+    function tick(now) { raf = 0; if (draw(now)) raf = requestAnimationFrame(tick); }
+    function kick() { if (on && !raf) raf = requestAnimationFrame(tick); }
+
+    function size() {
+      on = window.innerWidth >= 1000;
+      cvs.hidden = !on;
+      if (hint) hint.hidden = !(on && fine.matches);
+      if (!on) { hero.classList.remove("tile-hover"); return; }
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = hero.clientWidth; H = hero.clientHeight;
+      S = Math.max(54, Math.min(84, window.innerWidth * 0.06));   // clamp(54px, 6vw, 84px)
+      cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
+      cvs.style.width = W + "px"; cvs.style.height = H + "px";
+      if (hint) { hint.style.top = (4 * S + 14) + "px"; hint.style.right = S + "px"; }
+      kick();
+    }
+    function cellAt(e) {
+      var b = cvs.getBoundingClientRect();
+      var k = Math.floor((W - (e.clientX - b.left)) / S), r = Math.floor((e.clientY - b.top) / S);
+      return k >= 0 && r >= 0 ? k + "," + r : null;
+    }
+    function onText(e) { return !!e.target.closest("a, button, h1, h2, p, .hero-meta, .hero-eyebrow"); }
+    function markTouched(v) {
+      touched = v;
+      if (!hint) return;
+      hint.disabled = !v;
+      hint.textContent = v ? "↺ Reset the mark" : "Click the grid to place a tile";
+    }
+
+    hero.addEventListener("pointermove", function (e) {
+      if (!on || !fine.matches) return;
+      var key = onText(e) ? null : cellAt(e);
+      hero.classList.toggle("tile-hover", !!key);
+      if (key === hoverKey) return;
+      hoverKey = key;
+      if (key && !reduce) heat[key] = 1;
+      kick();
+    });
+    hero.addEventListener("pointerleave", function () {
+      hoverKey = null; hero.classList.remove("tile-hover"); kick();
+    });
+    hero.addEventListener("click", function (e) {
+      if (!on || onText(e) || String(window.getSelection ? window.getSelection() : "")) return;
+      var key = cellAt(e);
+      if (!key) return;
+      var cur = placed[key];
+      var next = !cur ? 2 : cur.v === 2 ? 1 : 0;      // empty → accent → ink → empty
+      if (next) placed[key] = { v: next, t: reduce ? -1e9 : performance.now() };
+      else delete placed[key];
+      markTouched(true);
+      kick();
+    });
+    if (hint) hint.addEventListener("click", function () {
+      setMark(performance.now()); markTouched(false); kick();
+    });
+
+    readColors();
+    setMark(performance.now() + 500);
+    size();
+    if ("ResizeObserver" in window) new ResizeObserver(size).observe(hero);
+    else window.addEventListener("resize", size, { passive: true });
+  })();
 
   /* ---- animated nav mark (builds, then pulses) ----------------------- */
   var navMark = document.getElementById("navMark");
