@@ -31,6 +31,20 @@
   window.addEventListener("resize", onScroll, { passive: true });
   onScroll();
 
+  /* ---- mobile menu toggle -------------------------------------------- */
+  var navToggle = document.getElementById("navToggle");
+  if (nav && navToggle) {
+    var setMenu = function (open) {
+      nav.classList.toggle("open", open);
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+    navToggle.addEventListener("click", function () { setMenu(!nav.classList.contains("open")); });
+    qsa("#navlinks a, .nav-cta").forEach(function (a) { a.addEventListener("click", function () { setMenu(false); }); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+    window.addEventListener("resize", function () { if (window.innerWidth > 900) setMenu(false); }, { passive: true });
+  }
+
   /* ---- animated nav mark (builds, then pulses) ----------------------- */
   var navMark = document.getElementById("navMark");
   if (navMark) {
