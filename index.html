@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mohamed Sohail Rajab — Machine Learning Engineer</title>
 <meta name="description" content="Mohamed Sohail Rajab — Machine Learning Engineer at Derivco. Applied AI, data science and software. Honours data scientist, cum laude." />
+<meta name="theme-color" content="#f7f3ea" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet" />
@@ -60,7 +62,9 @@
 
   <!-- ============================ HERO ============================ -->
   <section class="hero" id="hero" data-screen-label="Hero">
-    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-bg" data-parallax aria-hidden="true"></div>
+    <canvas class="hero-tiles" id="heroTiles" data-parallax aria-hidden="true" hidden></canvas>
+    <button class="hero-hint mono-label" id="heroHint" data-parallax type="button" disabled hidden>Click the grid to place a tile</button>
     <div class="hero-eyebrow reveal">
       <span class="dot" aria-hidden="true"></span>
       <span class="mono-label">Portfolio — Edition 2026</span>
@@ -262,6 +266,12 @@
 
     <div class="proj-grid" data-stagger data-stagger-step="110">
       <article class="proj-card">
+        <ol class="proj-flow" aria-label="How it works">
+          <li><span class="fn">HDD Library</span><span class="fs">Storage</span></li>
+          <li><span class="fn">Raspberry Pi</span><span class="fs">Media server</span></li>
+          <li><span class="fn">VPN</span><span class="fs">Secure tunnel</span></li>
+          <li><span class="fn">Any Screen</span><span class="fs">Home &amp; away</span></li>
+        </ol>
         <div class="proj-body">
           <div class="proj-top">
             <span class="pid">P-01 — Self-Hosted</span>
@@ -280,6 +290,12 @@
       </article>
 
       <article class="proj-card">
+        <ol class="proj-flow" aria-label="How it works">
+          <li><span class="fn">Webcams</span><span class="fs">Capture</span></li>
+          <li><span class="fn">CV Model</span><span class="fs">Detect activity</span></li>
+          <li><span class="fn">LLM</span><span class="fs">Describe event</span></li>
+          <li><span class="fn">Alert</span><span class="fs">Plain language</span></li>
+        </ol>
         <div class="proj-body">
           <div class="proj-top">
             <span class="pid">P-02 — Computer Vision</span>
@@ -451,6 +467,7 @@
       <a href="#about">About</a> · <a href="#work">Work</a> · <a href="#mosaic">Mosaic</a><br />
       <a href="#projects">Projects</a> · <a href="#writing">Writing</a> · <a href="#collections">Collections</a><br />
       <a href="#contact">Contact</a>
+      <span class="kbd-tip">Press <kbd>1</kbd>–<kbd>7</kbd> to jump between sections</span>
     </div>
     <div class="col">
       <span class="lab">© 2026</span>
@@ -461,14 +478,6 @@
 
 </main>
 
-<script src="image-slot.js"></script>
 <script src="script.js"></script>
-
-<div id="tweaks-root"></div>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="tweaks-app.jsx"></script>
 </body>
 </html>
