@@ -127,7 +127,7 @@ body::after {
 .brand .mark { display: grid; grid-template-columns: repeat(3, 5px); grid-auto-rows: 5px; gap: 2px; }
 .brand .mark i { display: block; background: var(--ink); }
 .brand .mark i.a { background: var(--accent); }
-.brand .name { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; white-space: nowrap; }
+.brand .name { font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em; font-weight: 500; white-space: nowrap; }
 .brand .mark.build i { opacity: 0; transform: scale(.25); }
 .brand .mark.build.go i { opacity: 1; transform: none; transition: opacity .45s var(--ease-out), transform .6s var(--ease-out); }
 .brand .mark.build.go i:nth-child(1){transition-delay:.30s} .brand .mark.build.go i:nth-child(2){transition-delay:.36s}
