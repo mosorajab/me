@@ -31,30 +31,59 @@
   window.addEventListener("resize", onScroll, { passive: true });
   onScroll();
 
-  /* ---- mobile menu toggle -------------------------------------------- */
-  var navToggle = document.getElementById("navToggle");
-  if (nav && navToggle) {
-    var setMenu = function (open) {
-      nav.classList.toggle("open", open);
-      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-      navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    };
-    navToggle.addEventListener("click", function () { setMenu(!nav.classList.contains("open")); });
-    qsa("#navlinks a, .nav-cta").forEach(function (a) { a.addEventListener("click", function () { setMenu(false); }); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
-    window.addEventListener("resize", function () { if (window.innerWidth > 900) setMenu(false); }, { passive: true });
+  /* ---- index: full-screen section menu ------------------------------- */
+  var index = document.getElementById("index");
+  var indexOpen = document.getElementById("indexOpen");
+  var indexClose = document.getElementById("indexClose");
+  var lastFocus = null;
+  function setIndex(open) {
+    if (!index || open === !index.hidden) return;
+    if (open) {
+      lastFocus = document.activeElement;
+      index.hidden = false;
+      void index.offsetWidth;                 // let the fade-in transition run
+      index.classList.add("open");
+      document.body.classList.add("index-open");
+      var cur = index.querySelector("a.active") || index.querySelector(".index-list a");
+      if (cur) cur.focus({ preventScroll: true });
+    } else {
+      index.classList.remove("open");
+      index.hidden = true;
+      document.body.classList.remove("index-open");
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+    if (indexOpen) indexOpen.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  if (index && indexOpen) {
+    indexOpen.addEventListener("click", function () { setIndex(true); });
+    if (indexClose) indexClose.addEventListener("click", function () { setIndex(false); });
+    qsa("a", index).forEach(function (a) {
+      a.addEventListener("click", function () { lastFocus = null; setIndex(false); });
+    });
+    // keep Tab inside the open dialog
+    index.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab") return;
+      var f = qsa("a, button", index);
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
   }
 
-  /* ---- keyboard: 1–7 jump to sections -------------------------------- */
+  /* ---- keyboard: 1–7 jump to sections, I opens the index ------------- */
   var jumpTo = ["about", "work", "mosaic", "projects", "writing", "collections", "contact"];
   document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { setIndex(false); return; }
     if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
     var t = e.target;
     if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if (e.key === "i" || e.key === "I") { e.preventDefault(); setIndex(index && index.hidden); return; }
     var n = parseInt(e.key, 10);
     var sec = n >= 1 && n <= jumpTo.length && document.getElementById(jumpTo[n - 1]);
     if (!sec) return;
     e.preventDefault();
+    setIndex(false);
     sec.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
   });
 
@@ -291,22 +320,6 @@
     setTimeout(function () { reveals.forEach(show); }, 2800);
   }
 
-  /* ---- collections: draw icon strokes when in view ------------------- */
-  var collGrid = document.querySelector(".coll-grid");
-  if (collGrid) {
-    if (reduce || !("IntersectionObserver" in window)) {
-      collGrid.classList.add("drawn");
-    } else {
-      var drawIt = function () { collGrid.classList.add("drawn"); };
-      var cio = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { drawIt(); cio.unobserve(e.target); } });
-      }, { threshold: 0.01, rootMargin: "0px 0px -5% 0px" });
-      if (collGrid.getBoundingClientRect().top < (window.innerHeight || 800) * 0.95) drawIt();
-      else cio.observe(collGrid);
-      setTimeout(drawIt, 3200);
-    }
-  }
-
   /* ---- mosaic logo glyph: builds tile-by-tile when in view ----------- */
   var mGlyph = document.getElementById("mosaicGlyph");
   if (mGlyph) {
@@ -333,24 +346,59 @@
     }
   }
 
-  /* ---- active section in nav ----------------------------------------- */
-  var links = qsa("#navlinks a");
-  var map = {};
-  links.forEach(function (a) {
-    var id = a.getAttribute("href").slice(1);
-    if (document.getElementById(id)) map[id] = a;
-  });
-  if ("IntersectionObserver" in window) {
-    var current = null;
-    var navIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          var id = e.target.id;
-          if (current && map[current]) map[current].classList.remove("active");
-          if (map[id]) { map[id].classList.add("active"); current = id; }
-        }
-      });
-    }, { threshold: 0.0, rootMargin: "-45% 0px -50% 0px" });
-    Object.keys(map).forEach(function (id) { navIO.observe(document.getElementById(id)); });
+  /* ---- draw-in: icon strokes and the timeline track ------------------ */
+  qsa(".draw svg > *").forEach(function (el) { el.setAttribute("pathLength", "1"); });
+  var drawGroups = qsa(".draw, .tl");
+  if (reduce || !("IntersectionObserver" in window)) {
+    drawGroups.forEach(function (g) { g.classList.add("drawn"); });
+  } else {
+    var dio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("drawn"); dio.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    drawGroups.forEach(function (g) {
+      if (g.classList.contains("draw")) g.classList.add("armed");
+      dio.observe(g);
+    });
   }
+
+  /* ---- where am I: rail, index and nav follow the current section ---- */
+  var spySections = jumpTo.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+  var spyLinks = qsa("[data-spy]");
+  var rail = document.getElementById("rail");
+  var hero = document.getElementById("hero");
+  var nowN = document.getElementById("navNowN");
+  var nowT = document.getElementById("navNowT");
+  var nowBar = document.getElementById("navNowBar");
+  var nowLink = document.getElementById("navNow");
+  var activeId = null, spyQueued = false;
+  function spy() {
+    spyQueued = false;
+    var y = window.scrollY || docEl.scrollTop;
+    var vh = window.innerHeight || 800;
+    var line = y + vh * 0.4;
+    var cur = null;
+    spySections.forEach(function (s) { if (s.offsetTop <= line) cur = s; });
+    // the last section is short: count it as current once the page bottoms out
+    if (y + vh >= docEl.scrollHeight - 4) cur = spySections[spySections.length - 1];
+    var past = hero ? y > hero.offsetTop + hero.offsetHeight - vh * 0.5 : y > vh * 0.5;
+    if (nav) nav.classList.toggle("has-now", !!cur && past);
+    if (rail) rail.classList.toggle("show", past);
+    var id = cur && past ? cur.id : null;
+    if (cur && nowBar) {
+      var p = (line - cur.offsetTop) / Math.max(1, cur.offsetHeight);
+      nowBar.style.transform = "scaleX(" + Math.max(0, Math.min(1, p)).toFixed(3) + ")";
+    }
+    if (id === activeId) return;
+    activeId = id;
+    spyLinks.forEach(function (a) { a.classList.toggle("active", a.getAttribute("data-spy") === id); });
+    if (cur && nowN && nowT) {
+      nowN.textContent = cur.getAttribute("data-n") || "";
+      nowT.textContent = cur.getAttribute("data-label") || "";
+      if (nowLink) nowLink.setAttribute("href", "#" + cur.id);
+    }
+  }
+  function queueSpy() { if (!spyQueued) { spyQueued = true; requestAnimationFrame(spy); } }
+  window.addEventListener("scroll", queueSpy, { passive: true });
+  window.addEventListener("resize", queueSpy, { passive: true });
+  spy();
 })();
