@@ -600,7 +600,7 @@ body.no-motion .tl::before, body.no-motion .tl::after { transform: none; transit
    ========================================================================= */
 .coll-grid {
   list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
   border-top: 1px solid var(--hair); border-left: 1px solid var(--hair);
 }
 .coll-cell {
@@ -612,13 +612,20 @@ body.no-motion .tl::before, body.no-motion .tl::after { transform: none; transit
 .coll-cell .num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--ink-3); }
 .coll-cell .ico { width: 40px; height: 40px; color: var(--ink); transition: color .35s ease, transform .45s var(--ease-out, ease); }
 .coll-cell .c-name { font-family: var(--serif); font-size: 22px; letter-spacing: -0.01em; transition: color .3s ease; }
+.coll-cell .c-note {
+  display: block; margin-top: 6px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3);
+  transition: color .3s ease;
+}
+.coll-cell .c-note abbr { text-decoration: none; cursor: help; }
+.coll-cell:hover .c-note { color: oklch(1 0 0 / 0.75); }
 .coll-cell:hover { background: var(--paper-2); }
 .coll-cell:hover .ico { color: var(--accent); transform: translateY(-3px) scale(1.06); }
 .coll-cell:hover .c-name { color: var(--accent); }
 @media (max-width: 1000px) {
   .coll-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .coll-cell { min-height: 160px; }
-  .coll-cell:last-child { grid-column: 1 / -1; }
+  .coll-cell:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 
 /* =========================================================================
