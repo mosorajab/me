@@ -98,12 +98,13 @@
     var MARK = [0, 1, 0, 0, 0, 1, 1, 0, 0];   // same pattern as the nav mark; 1 = accent
     var W = 0, H = 0, S = 0, dpr = 1, on = false, raf = 0;
     var placed = {}, heat = {}, hoverKey = null, touched = false;
-    var ink, accent;
+    var ink, accent, sand;
 
     function readColors() {
       var cs = getComputedStyle(document.documentElement);
       ink = cs.getPropertyValue("--ink").trim();
       accent = cs.getPropertyValue("--accent").trim();
+      sand = cs.getPropertyValue("--sand-2").trim() || ink;
     }
     // cells are counted from the right edge (k) and top (r), matching the
     // CSS grid on .hero-bg, which is anchored right/top
@@ -145,8 +146,8 @@
         if (prog < 1) busy = true;
         if (prog <= 0) return;
         var s = c[2] * ease(prog), o = (c[2] - s) / 2;
-        ctx.globalAlpha = prog * (tile.v === 2 ? 0.94 : 0.075);
-        ctx.fillStyle = tile.v === 2 ? accent : ink;
+        ctx.globalAlpha = prog * (tile.v === 2 ? 0.94 : 1);
+        ctx.fillStyle = tile.v === 2 ? accent : sand;
         ctx.fillRect(c[0] + o, c[1] + o, s, s);
       });
       if (hoverKey) {
