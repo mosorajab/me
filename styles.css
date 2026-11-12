@@ -7,7 +7,7 @@
 :root {
   /* paper & ink */
   --paper:      #ffffff;                 /* clean white */
-  --paper-2:    oklch(0.968 0.002 80);   /* neutral panel / hover tint */
+  --paper-2:    oklch(0.967 0.009 78);   /* warm panel / hover tint */
   --ink:        oklch(0.205 0.012 60);   /* warm near-black */
   --ink-2:      oklch(0.205 0.012 60 / 0.62);
   --ink-3:      oklch(0.205 0.012 60 / 0.56);
@@ -17,6 +17,13 @@
   /* ink accent — oxblood (tweakable to teal / navy) */
   --accent:     oklch(0.455 0.135 24);   /* oxblood */
   --accent-ink: oklch(0.455 0.135 24);
+
+  /* warm materials: sand bands and tiles, a deep oxblood band */
+  --sand:       oklch(0.962 0.016 78);
+  --sand-2:     oklch(0.928 0.026 72);
+  --ox-deep:    oklch(0.33 0.10 24);
+  --ox-light:   oklch(0.80 0.08 40);
+  --radius:     10px;
 
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --serif: "Spectral", Georgia, "Times New Roman", serif;
@@ -449,7 +456,7 @@ body.index-open { overflow: hidden; }
 .tl-yr { font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: var(--ink-2); line-height: 22px; }
 .tl-node {
   position: relative; z-index: 1; width: 13px; height: 13px; margin: 20px 0 24px;
-  background: var(--ink); box-shadow: 0 0 0 6px var(--paper);
+  background: var(--ink); box-shadow: 0 0 0 6px var(--ring, var(--paper));
 }
 .tl-item.current .tl-node { background: var(--accent); }
 .tl-item.current .tl-node::after {
@@ -546,7 +553,7 @@ body.no-motion .tl::before, body.no-motion .tl::after { transform: none; transit
   display: grid; grid-template-columns: repeat(3, 34px); grid-auto-rows: 34px; gap: 5px;
   transition: transform .7s var(--ease-out, ease);
 }
-.post-feature .pf-art i { background: oklch(0.205 0.012 60 / 0.07); transition: background .5s ease; }
+.post-feature .pf-art i { background: var(--sand-2); transition: background .5s ease; }
 .post-feature .pf-art i.a { background: var(--accent); }
 .post-feature .pf-meta { font-family: var(--mono); font-size: var(--label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
 .post-feature .pf-title {
@@ -859,7 +866,7 @@ a:focus-visible, button:focus-visible {
     display: grid; grid-template-columns: repeat(3, 12px); grid-auto-rows: 12px; gap: 3px;
     margin-left: auto; flex: none;
   }
-  .hero-mini i { background: oklch(0.205 0.012 60 / 0.08); }
+  .hero-mini i { background: var(--sand-2); }
   .hero-mini i.a { background: var(--accent); }
 }
 @media (max-width: 640px) { .hero-eyebrow .eyebrow-field { display: none; } }
@@ -871,3 +878,61 @@ a:focus-visible, button:focus-visible {
   transform: translateY(-160%); transition: transform .25s ease;
 }
 .skip-link:focus { transform: none; }
+
+/* =========================================================================
+   MATERIAL — warm bands, soft tiles, large numerals, paper grain
+   ========================================================================= */
+/* full-bleed colour bands behind some sections */
+.band { position: relative; isolation: isolate; --ring: var(--sand); }
+.band::before {
+  content: ""; position: absolute; z-index: -1; top: 0; bottom: 0;
+  left: calc(50% - 50vw); right: calc(50% - 50vw); background: var(--sand);
+}
+.band .sec-head, .band + section .sec-head { border-top-color: transparent; }
+
+/* section numeral: a large italic figure behind each header */
+.sec-head { position: relative; }
+.sec-num {
+  position: absolute; z-index: -1; right: -0.04em; top: 0.02em;
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(5rem, 13vw, 11rem); line-height: 1; letter-spacing: -0.04em;
+  color: oklch(0.205 0.012 60 / 0.055); pointer-events: none; user-select: none;
+}
+.sec-head { isolation: isolate; }
+.band .sec-num { color: oklch(0.45 0.08 60 / 0.10); }
+
+/* tiles: soft sand blocks instead of ruled cells; oxblood on hover */
+.cap-grid, .coll-grid { border: 0; gap: 10px; }
+.cap, .coll-cell {
+  border: 0; border-radius: var(--radius); background: var(--sand);
+  transition: background .35s ease, color .35s ease, transform .45s var(--ease-out, ease);
+}
+.cap:hover, .coll-cell:hover { background: var(--accent); color: var(--paper); transform: translateY(-3px); }
+.cap:hover .ico, .coll-cell:hover .ico, .coll-cell:hover .c-name { color: var(--paper); }
+.coll-cell:hover .num { color: oklch(1 0 0 / 0.65); }
+
+/* cards: rounder corners */
+.proj-card, .post-feature { border-radius: var(--radius); overflow: hidden; }
+.band .post-feature { background: var(--paper); }
+.post-feature .pf-art i { border-radius: 2px; }
+.proj-stack .chip { border-radius: 999px; padding: 5px 10px; }
+
+/* contact: deep oxblood band to close the page */
+.band-ox { --ring: var(--ox-deep); color: var(--paper); }
+.band-ox::before { background: var(--ox-deep); }
+.band-ox ::selection { background: var(--paper); color: var(--ox-deep); }
+.band-ox .sec-head .idx { color: var(--ox-light); }
+.band-ox .sec-head .sec-title em { color: var(--ox-light); }
+.band-ox .sec-head .sec-sub { color: oklch(1 0 0 / 0.7); }
+.band-ox .sec-num { color: oklch(1 0 0 / 0.07); }
+.band-ox .contact-links a { border-color: oklch(1 0 0 / 0.18); }
+.band-ox .contact-links a .n, .band-ox .contact-links a .h { color: oklch(1 0 0 / 0.55); }
+.band-ox .contact-links a:hover, .band-ox .contact-links a:hover .h { color: var(--ox-light); }
+.band-ox + footer.colophon { border-top-color: transparent; }
+
+/* paper grain over the whole page, for a printed rather than clinical feel */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none;
+  opacity: .035; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
