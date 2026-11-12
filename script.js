@@ -1,5 +1,5 @@
 /* =========================================================================
-   Portfolio — interactions & motion
+   mosorr.com — interactions & motion
    ========================================================================= */
 (function () {
   "use strict";
@@ -8,8 +8,28 @@
   var qsa = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
   var docEl = document.documentElement;
-  var nav = document.getElementById("nav");
   var prog = document.getElementById("progress");
+
+  /* ---- theme: follows the device until the visitor picks one ---------- */
+  (function theme() {
+    var btn = document.getElementById("themeToggle");
+    var sys = window.matchMedia("(prefers-color-scheme: light)");
+    var meta = document.querySelector('meta[name="theme-color"]');
+    function stored() { try { var t = localStorage.getItem("theme"); return t === "light" || t === "dark" ? t : null; } catch (e) { return null; } }
+    function apply(t) {
+      docEl.setAttribute("data-theme", t);
+      if (meta) meta.setAttribute("content", t === "light" ? "#f8f5ef" : "#1a1817");
+      if (btn) btn.setAttribute("aria-label", t === "light" ? "Switch to dark mode" : "Switch to light mode");
+    }
+    apply(stored() || (sys.matches ? "light" : "dark"));
+    if (btn) btn.addEventListener("click", function () {
+      var next = docEl.getAttribute("data-theme") === "light" ? "dark" : "light";
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      apply(next);
+    });
+    var follow = function () { if (!stored()) apply(sys.matches ? "light" : "dark"); };
+    if (sys.addEventListener) sys.addEventListener("change", follow); else if (sys.addListener) sys.addListener(follow);
+  })();
 
   /* ---- index: full-screen section menu ------------------------------- */
   var index = document.getElementById("index");
@@ -51,7 +71,7 @@
   }
 
   /* ---- keyboard: 1–6 jump to sections, I opens the index ------------- */
-  var jumpTo = ["about", "work", "projects", "writing", "collections", "contact"];
+  var jumpTo = ["about", "projects", "writing", "collections", "background", "contact"];
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") { setIndex(false); return; }
     if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
@@ -65,18 +85,6 @@
     setIndex(false);
     sec.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
   });
-
-  /* ---- animated nav mark (builds, then pulses) ----------------------- */
-  var navMark = document.getElementById("navMark");
-  if (navMark) {
-    if (reduce) navMark.classList.add("live");
-    else {
-      navMark.classList.add("build");
-      void navMark.offsetWidth;
-      navMark.classList.add("go");
-      setTimeout(function () { navMark.classList.add("live"); }, 1700);
-    }
-  }
 
   /* ---- hero headline: words sharpen out of a blur, one by one -------- */
   var hl = document.getElementById("heroHeadline");
@@ -99,49 +107,6 @@
     requestAnimationFrame(function () { requestAnimationFrame(function () { hl.classList.add("words-in"); }); });
   }
 
-  /* ---- hero: a light that follows the pointer across Leonardo -------- */
-  (function heroLight() {
-    var hero = document.getElementById("hero");
-    var plate = document.getElementById("heroPlate");
-    if (!hero || !plate) return;
-    var stage = plate.querySelector(".plate-stage");
-    var target = { x: 0.5, y: 0.42 }, cur = { x: 0.5, y: 0.42 };
-    var lastMove = 0, raf = 0, t0 = performance.now();
-    function frame(now) {
-      raf = 0;
-      // with no pointer for a while (or on touch), the light wanders on its own
-      if (!fine || now - lastMove > 2600) {
-        var t = (now - t0) / 1000;
-        target.x = 0.5 + Math.sin(t * 0.45) * 0.24;
-        target.y = 0.42 + Math.sin(t * 0.31 + 1.3) * 0.22;
-      }
-      cur.x += (target.x - cur.x) * 0.08;
-      cur.y += (target.y - cur.y) * 0.08;
-      stage.style.setProperty("--px", (cur.x * 100).toFixed(2) + "%");
-      stage.style.setProperty("--py", (cur.y * 100).toFixed(2) + "%");
-      var rs = stage.getBoundingClientRect(), rh = hero.getBoundingClientRect();
-      hero.style.setProperty("--lx", ((rs.left - rh.left + cur.x * rs.width) / rh.width * 100).toFixed(2) + "%");
-      hero.style.setProperty("--ly", ((rs.top - rh.top + cur.y * rs.height) / rh.height * 100).toFixed(2) + "%");
-      if (heroVisible) raf = requestAnimationFrame(frame);
-    }
-    var heroVisible = true;
-    if (reduce) { stage.style.setProperty("--pr", "1400px"); return; }
-    hero.addEventListener("pointermove", function (e) {
-      if (!fine) return;
-      var r = stage.getBoundingClientRect();
-      target.x = clamp((e.clientX - r.left) / r.width, -0.2, 1.2);
-      target.y = clamp((e.clientY - r.top) / r.height, -0.2, 1.2);
-      lastMove = performance.now();
-    });
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (es) {
-        heroVisible = es[0].isIntersecting;
-        if (heroVisible && !raf) raf = requestAnimationFrame(frame);
-      }).observe(hero);
-    }
-    raf = requestAnimationFrame(frame);
-  })();
-
   /* ---- lens: magnify a framed plate under the pointer ---------------- */
   if (fine) qsa(".lens-plate").forEach(function (fig) {
     var frame = fig.querySelector(".plate-frame");
@@ -162,40 +127,12 @@
     });
   });
 
-  /* ---- spotlight cards: glow and lit border follow the pointer ------- */
-  if (fine) qsa(".spot").forEach(function (el) {
-    el.addEventListener("pointermove", function (e) {
-      var r = el.getBoundingClientRect();
-      el.style.setProperty("--x", (e.clientX - r.left) + "px");
-      el.style.setProperty("--y", (e.clientY - r.top) + "px");
-    });
-  });
-
-  /* ---- project cards tilt toward the pointer, with glare ------------- */
-  if (fine && !reduce) qsa(".tilt").forEach(function (card) {
-    var max = card.classList.contains("wide") ? 3 : 6;
-    card.addEventListener("pointermove", function (e) {
-      var r = card.getBoundingClientRect();
-      var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-      card.classList.add("tilting");
-      card.style.setProperty("--ry", ((px - 0.5) * 2 * max).toFixed(2) + "deg");
-      card.style.setProperty("--rx", ((0.5 - py) * 2 * max).toFixed(2) + "deg");
-      card.style.setProperty("--gx", (px * 100).toFixed(1) + "%");
-      card.style.setProperty("--gy", (py * 100).toFixed(1) + "%");
-    });
-    card.addEventListener("pointerleave", function () {
-      card.classList.remove("tilting");
-      card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg");
-    });
-  });
-
   /* ---- off the clock: the dial shows the pastime you point at ------- */
   (function cabinet() {
     var cab = document.getElementById("cabinet");
     if (!cab) return;
     var items = qsa(".cab-item", cab), arts = qsa(".cab-art", cab);
     var ring = cab.querySelector(".cab-ring"), count = document.getElementById("cabCount");
-    var numerals = ["i", "ii", "iii", "iv", "v", "vi"];
     qsa(".cab-ico svg > *", cab).forEach(function (el) { el.setAttribute("pathLength", "1"); });
     var cur = 0, lastTouch = 0, inView = false;
     function show(i) {
@@ -203,8 +140,8 @@
       cur = i;
       items.forEach(function (b, k) { b.classList.toggle("on", k === i); b.setAttribute("aria-pressed", k === i ? "true" : "false"); });
       arts.forEach(function (a, k) { a.classList.toggle("on", k === i); });
-      if (ring) ring.style.transform = "rotate(" + i * 60 + "deg)";
-      if (count) count.textContent = numerals[i] + " / vi";
+      if (ring) ring.style.transform = "rotate(" + (i * 360 / items.length).toFixed(1) + "deg)";
+      if (count) count.textContent = (i + 1) + " / " + items.length;
     }
     items.forEach(function (b, k) {
       var pick = function () { lastTouch = Date.now(); show(k); };
@@ -257,12 +194,11 @@
 
   /* ---- draw-in: icon strokes ----------------------------------------- */
   qsa(".draw svg > *").forEach(function (el) { el.setAttribute("pathLength", "1"); });
-  var drawGroups = qsa(".draw");
   if (!reduce && "IntersectionObserver" in window) {
     var dio = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("drawn"); dio.unobserve(e.target); } });
     }, { threshold: 0.15 });
-    drawGroups.forEach(function (g) { g.classList.add("armed"); dio.observe(g); });
+    qsa(".draw").forEach(function (g) { g.classList.add("armed"); dio.observe(g); });
   }
 
   /* ---- dock: magnify icons near the pointer -------------------------- */
@@ -273,7 +209,7 @@
       dockLinks.forEach(function (a) {
         var r = a.getBoundingClientRect();
         var d = Math.abs(e.clientX - (r.left + r.width / 2));
-        a.style.setProperty("--s", (44 + 22 * Math.max(0, 1 - d / 150)).toFixed(1) + "px");
+        a.style.setProperty("--s", (44 + 20 * Math.max(0, 1 - d / 150)).toFixed(1) + "px");
       });
     });
     dock.addEventListener("pointerleave", function () {
@@ -281,22 +217,18 @@
     });
   }
 
-  /* ---- scroll: progress, nav rule, dock, active section, tracing beam  */
+  /* ---- scroll: progress, dock, active section ------------------------ */
   var sections = jumpTo.map(function (id) { return document.getElementById(id); }).filter(Boolean);
   var spyLinks = qsa("[data-spy]");
   var hero = document.getElementById("hero");
-  var trace = document.getElementById("trace");
-  var wideTrace = window.matchMedia("(min-width: 900px)");
   var activeId = null, queued = false;
   function onScroll() {
     queued = false;
     var y = window.scrollY || docEl.scrollTop;
     var vh = window.innerHeight || 800;
     var max = docEl.scrollHeight - docEl.clientHeight;
-    if (nav) nav.classList.toggle("scrolled", y > 12);
     if (prog) prog.style.transform = "scaleX(" + (max > 0 ? clamp(y / max, 0, 1) : 0) + ")";
     if (dock) dock.classList.toggle("show", y > (hero ? hero.offsetHeight * 0.35 : vh * 0.4));
-
     var line = y + vh * 0.4, cur = null;
     sections.forEach(function (s) { if (s.offsetTop <= line) cur = s; });
     if (y + vh >= docEl.scrollHeight - 4) cur = sections[sections.length - 1];
@@ -304,16 +236,6 @@
     if (id !== activeId) {
       activeId = id;
       spyLinks.forEach(function (a) { a.classList.toggle("active", a.getAttribute("data-spy") === id); });
-    }
-
-    // the beam grows as the timeline comes up the screen: down the rail on
-    // phones, along the top of the row on wide screens
-    if (trace) {
-      var r = trace.getBoundingClientRect();
-      var p = reduce ? 1 : wideTrace.matches
-        ? clamp((vh * 0.9 - r.top) / (vh * 0.45), 0, 1)
-        : clamp((vh * 0.6 - r.top) / r.height, 0, 1);
-      trace.style.setProperty("--beam", (p * 100).toFixed(1) + "%");
     }
   }
   function queue() { if (!queued) { queued = true; requestAnimationFrame(onScroll); } }

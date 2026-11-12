@@ -6,45 +6,37 @@
 <title>Not found — Mohamed Sohail Rajab</title>
 <meta name="robots" content="noindex" />
 <meta name="theme-color" content="#1a1817" />
+<script>(function(){var t=null;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)})();</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet" />
 <!-- Absolute paths: GitHub Pages serves this page at whatever URL was missing. -->
-<link rel="stylesheet" href="/styles.css?v=20261120" />
+<link rel="stylesheet" href="/styles.css?v=20261122" />
 <style>
-  .lost { min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.7fr); align-items: center; gap: clamp(28px, 6vw, 90px); max-width: var(--maxw); margin: 0 auto; padding: 48px var(--gutter); }
-  .lost .copy { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
-  .lost h1 { margin: 0; font-family: var(--display); font-weight: 500; font-size: clamp(2.6rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.015em; }
+  .lost { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 22px; max-width: var(--maxw); margin: 0 auto; padding: 48px var(--gutter); }
+  .lost .logo { width: clamp(90px, 14vw, 150px); fill: var(--accent); }
+  .lost h1 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(2.6rem, 6vw, 4.8rem); line-height: 1.02; letter-spacing: -0.025em; }
   .lost h1 em { color: var(--accent-soft); }
-  .lost p { margin: 0; max-width: 40ch; font-size: 19px; color: var(--ink-2); }
-  .lost nav { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; padding-top: 8px; }
-  .lost nav a:not(.btn) { font-family: var(--mono); font-size: var(--label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+  .lost p { margin: 0; max-width: 40ch; color: var(--ink-2); }
+  .lost nav { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; padding-top: 8px; font-size: 14.5px; font-weight: 500; }
+  .lost nav a:not(.btn) { color: var(--ink-2); }
   .lost nav a:not(.btn):hover { color: var(--accent-soft); }
-  .lost .plate-stage { max-height: 70vh; }
-  .lost .plate-base { opacity: .5; }
-  @media (max-width: 820px) { .lost { grid-template-columns: 1fr; } .lost .hero-plate { order: -1; width: min(50%, 220px); margin: 0 auto; } .lost .plate-stage { max-height: 34vh; } }
 </style>
 </head>
 <body>
 <main class="lost">
-  <div class="copy">
-    <span class="mono-label" style="color:var(--accent-soft)">404 · Not found</span>
-    <h1>A page is <em>missing</em> from the notebook.</h1>
-    <p>This page doesn't exist, or it moved. Everything else is still where it should be.</p>
-    <nav aria-label="Sections">
-      <a class="btn btn-primary" href="/">Back to the site <span aria-hidden="true">→</span></a>
-      <a href="/#about">About</a>
-      <a href="/#work">Experience</a>
-      <a href="/#projects">Projects</a>
-      <a href="/#writing">Writing</a>
-      <a href="/#contact">Contact</a>
-    </nav>
-  </div>
-  <figure class="hero-plate">
-    <div class="plate-stage"><img class="plate-base" src="/art/vitruvian.webp" width="1000" height="1405" alt="Leonardo da Vinci's Vitruvian Man." /></div>
-    <figcaption><span class="pl">Pl. I</span> Leonardo da Vinci, <em>Vitruvian Man</em>, c. 1490</figcaption>
-  </figure>
+  <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><path d="M23.8 56.9Q23.9 54.3 22.5 53.7Q21.2 53.1 17 54.1Q10.4 55.6 5.2 51.1Q0 46.7 0 37.8Q0 28.9 6.4 22.5Q12.8 16 21.7 16Q25.8 16 30.5 18Q35.2 20 38.6 23.9Q38.8 24.3 39.2 24.3Q39.5 24.2 39.7 23.8Q41.8 20.5 45 18.2Q48.2 16 53.5 16.1Q60.4 16.4 65.9 24.6Q66.2 25.1 66.6 25.1Q67 25.1 67.3 24.6Q69.2 21 72.2 18.7Q75.1 16.3 79.6 16.3Q85.3 16.4 89 19.8Q92.7 23.2 94.4 31.2Q95.4 36.7 98.6 37Q99.6 37.1 99.6 37.8Q99.7 38.5 98.5 38.9Q89.5 42 86.1 48.7Q82.7 55.5 86.4 65.9Q88 70.6 91.1 72.5Q94.1 74.5 97.7 72.2Q99 71.4 99.7 72.3Q100.4 73.1 99.5 73.9Q96.3 76.4 93.2 78.8Q90.1 81.3 87 83.8Q86.5 84.1 86.1 83.8Q76.2 75.9 74.2 66.2Q72.2 56.5 86.9 43.2Q87.3 42.9 87.2 42.6Q87.2 42.2 86.8 42Q83.6 39.8 82 30.8Q80.4 21.9 74.8 21.9Q70.8 21.8 68 27.7Q67.9 28 68 28.3Q69.8 32.2 70.7 36.9Q71.5 41.6 70.7 46.9Q68.9 59.7 65.2 66.2Q61.6 72.7 56.6 79.2Q50 87.5 44.1 81Q42.4 79.2 40.6 78.6Q38.7 78.1 36.4 79.9Q35.5 80.7 34.9 80.1Q34.3 79.5 34.9 78.6Q40.9 70.4 44.4 69.2Q47.9 68.1 51.2 71.2Q53.9 73.7 56.2 73.9Q58.5 74.1 59.8 70.5Q62.3 63.5 61.6 51Q60.9 38.5 56.6 31.9Q52.2 25.2 48.3 24Q44.4 22.8 41.2 26.1Q40.7 26.5 41.2 27Q46.7 34.7 47.1 44.8Q47.4 53 43.9 60.6Q40.4 68.2 34.9 75.1Q29 82.7 23.6 83.8Q18.3 84.9 13.8 78.4Q9.9 72.6 5.9 77Q4.9 77.8 4.1 77Q3.4 76.2 4.4 75.2Q17 62.3 24.2 71.8Q25.4 73.4 26.4 74.7Q27.5 76.1 29.6 76Q32.3 75.9 35.2 70.1Q38.2 64.3 38.2 55.5Q38.1 44 32.2 35.3Q26.2 26.6 18.6 25.7Q10.9 25 6.5 28.6Q2.1 32.3 2.3 37.3Q2.4 42.4 5 45.4Q7.6 48.5 14.5 46.7Q27.9 43.3 26.1 56.6Q26 58 24.9 58Q23.8 58 23.8 56.9Z"/></svg>
+  <span class="label">404 · Not found</span>
+  <h1>This page is <em>missing</em>.</h1>
+  <p>It doesn't exist, or it moved. Everything else is still where it should be.</p>
+  <nav aria-label="Sections">
+    <a class="btn btn-primary" href="/">Back to the site <span aria-hidden="true">→</span></a>
+    <a href="/#about">About</a>
+    <a href="/#projects">Projects</a>
+    <a href="/#writing">Writing</a>
+    <a href="/#contact">Contact</a>
+  </nav>
 </main>
 </body>
 </html>
