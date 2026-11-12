@@ -505,7 +505,6 @@ section[id] { scroll-margin-top: calc(var(--nav-h) - 20px); }
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 26px;
   border-bottom: 1px solid var(--hair-2);
   background-color: oklch(0.15 0.005 40);
-  background-image: radial-gradient(var(--hair) 1px, transparent 1.2px); background-size: 16px 16px;
 }
 .proj-flow.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .proj-flow li { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 11px 12px 12px; border-radius: 10px; background: var(--paper-2); border: 1px solid var(--hair); transition: border-color .35s ease; }
