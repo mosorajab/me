@@ -25,6 +25,7 @@
   --maxw: 1480px;
 
   --label: 11px;
+  --nav-h: 64px;   /* fixed top bar: 14px padding + 35px controls + 1px rule */
   --ls-label: 0.16em;
 }
 
@@ -166,8 +167,8 @@ section { position: relative; }
 .nav-cta {
   font-family: var(--mono); font-size: var(--label); letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--paper); background: var(--ink);
-  padding: 9px 14px; border-radius: 2px; transition: background .25s ease;
-  white-space: nowrap;
+  height: 35px; padding: 0 14px; display: inline-flex; align-items: center;
+  border-radius: 2px; transition: background .25s ease; white-space: nowrap;
 }
 .nav-cta:hover { background: var(--accent); }
 .nav-index {
@@ -709,8 +710,8 @@ body.no-motion .reveal { opacity: 1 !important; transform: none !important; tran
 
 /* section spacing rhythm */
 .sec-pad { padding-top: clamp(28px, 4.5vh, 48px); }
-/* keep a jumped-to section clear of the fixed nav */
-section[id] { scroll-margin-top: 30px; }
+/* a jumped-to section lands with its top rule on the nav's bottom edge */
+section[id] { scroll-margin-top: calc(var(--nav-h) - clamp(28px, 4.5vh, 48px)); }
 
 /* =========================================================================
    MOTION SYSTEM — refined entrances, flow & micro-interactions
@@ -915,3 +916,26 @@ a:focus-visible, button:focus-visible {
 @media (hover: none) { .kbd-tip, .kbd-col { display: none; } }
 /* keep hero text boxes tight so the open grid stays clickable */
 .hero-eyebrow, .hero-name, .hero-headline, .hero-sub { width: fit-content; }
+
+/* =========================================================================
+   SMALL SCREENS — the mark in the hero, and a skip link for keyboards
+   ========================================================================= */
+.hero-mini { display: none; }
+@media (max-width: 999px) {
+  .hero-eyebrow { width: auto; }
+  .hero-mini {
+    display: grid; grid-template-columns: repeat(3, 12px); grid-auto-rows: 12px; gap: 3px;
+    margin-left: auto; flex: none;
+  }
+  .hero-mini i { background: oklch(0.205 0.012 60 / 0.08); }
+  .hero-mini i.a { background: var(--accent); }
+}
+@media (max-width: 640px) { .hero-eyebrow .eyebrow-field { display: none; } }
+
+.skip-link {
+  position: fixed; left: var(--gutter); top: 10px; z-index: 200;
+  padding: 9px 14px; background: var(--ink); color: var(--paper); border-radius: 2px;
+  font-family: var(--mono); font-size: var(--label); letter-spacing: 0.1em; text-transform: uppercase;
+  transform: translateY(-160%); transition: transform .25s ease;
+}
+.skip-link:focus { transform: none; }
