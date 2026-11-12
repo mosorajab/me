@@ -254,6 +254,7 @@
   var spyLinks = qsa("[data-spy]");
   var hero = document.getElementById("hero");
   var trace = document.getElementById("trace");
+  var wideTrace = window.matchMedia("(min-width: 900px)");
   var activeId = null, queued = false;
   function onScroll() {
     queued = false;
@@ -273,10 +274,13 @@
       spyLinks.forEach(function (a) { a.classList.toggle("active", a.getAttribute("data-spy") === id); });
     }
 
-    // the beam grows as the timeline passes the middle of the screen
+    // the beam grows as the timeline comes up the screen: down the rail on
+    // phones, along the top of the row on wide screens
     if (trace) {
       var r = trace.getBoundingClientRect();
-      var p = reduce ? 1 : clamp((vh * 0.6 - r.top) / r.height, 0, 1);
+      var p = reduce ? 1 : wideTrace.matches
+        ? clamp((vh * 0.9 - r.top) / (vh * 0.45), 0, 1)
+        : clamp((vh * 0.6 - r.top) / r.height, 0, 1);
       trace.style.setProperty("--beam", (p * 100).toFixed(1) + "%");
     }
   }
