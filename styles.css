@@ -574,20 +574,61 @@ section[id] { scroll-margin-top: calc(var(--nav-h) - 20px); }
 }
 
 /* =========================================================================
-   V · OFF THE CLOCK — focus cards: the one you look at comes forward
+   V · OFF THE CLOCK — a cabinet of curiosities: an engraved dial shows the
+   pastime you point at; the list names them all
    ========================================================================= */
-.coll-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-.coll-cell { display: flex; flex-direction: column; justify-content: space-between; gap: 20px; min-height: 230px; padding: 20px; transition: transform .45s var(--ease-out), opacity .4s ease, filter .4s ease, border-color .3s ease; }
-.coll-grid:hover .coll-cell:not(:hover) { opacity: .45; filter: blur(1.5px) saturate(.6); }
-.coll-cell .num { font-family: var(--display); font-style: italic; font-size: 22px; color: var(--accent); }
-.coll-cell .ico { width: 44px; height: 44px; color: var(--ink); transition: color .35s ease, transform .5s var(--ease-out); }
-.coll-cell:hover .ico { color: var(--accent-soft); transform: translateY(-4px) scale(1.06); }
-.c-name { font-family: var(--display); font-weight: 600; font-size: 26px; line-height: 1.05; }
-.c-note { display: block; margin-top: 6px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
-.c-note abbr { text-decoration: none; cursor: help; border-bottom: 1px dotted var(--ink-3); }
-@media (max-width: 1100px) { .coll-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .coll-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .coll-cell { min-height: 180px; } }
-@media (hover: none) { .coll-grid:hover .coll-cell:not(:hover) { opacity: 1; filter: none; } }
+.cabinet { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.cab-stage { position: relative; aspect-ratio: 1; width: 100%; max-width: 440px; justify-self: center; }
+.cab-stage::before {
+  content: ""; position: absolute; inset: 12%; border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.56 0.17 25 / 0.22), transparent 70%);
+}
+.cab-dial, .cab-ring { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; }
+.cab-dial { stroke: var(--hair); stroke-width: .6; }
+.cab-dial .faint { stroke: var(--hair-2); }
+.cab-dial .ticks { stroke: var(--ink-3); stroke-width: .5; }
+.cab-dial .spokes { stroke: var(--hair); }
+.cab-ring { stroke: oklch(0.56 0.17 25 / 0.5); stroke-width: .6; stroke-dasharray: 2 4; animation: dialTurn 60s linear infinite; transition: transform 1s var(--ease-out); }
+.cab-ring .bead { fill: var(--accent); stroke: none; filter: drop-shadow(0 0 4px var(--accent)); }
+@keyframes dialTurn { to { rotate: 360deg; } }
+.cab-art {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  opacity: 0; transform: scale(.88); filter: blur(6px);
+  transition: opacity .7s var(--ease-out), transform .9s var(--ease-out), filter .7s var(--ease-out);
+}
+.cab-art.on { opacity: 1; transform: none; filter: none; }
+.cab-ico { width: 34%; height: 34%; color: var(--ink); filter: drop-shadow(0 0 18px oklch(0.94 0.012 85 / 0.25)); }
+.cab-ico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: .9; stroke-linecap: round; stroke-linejoin: round; }
+.cab-art.on .cab-ico svg > * { stroke-dasharray: 1; stroke-dashoffset: 1; animation: cabDraw 1.4s var(--ease-out) forwards; }
+@keyframes cabDraw { to { stroke-dashoffset: 0; } }
+.cab-count { position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%); font-family: var(--display); font-style: italic; font-size: 18px; color: var(--accent-soft); }
+
+.cab-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair); }
+.cab-item {
+  width: 100%; display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; align-items: baseline; gap: 16px;
+  padding: clamp(14px, 2.2vh, 20px) 4px; background: none; border: 0; border-bottom: 1px solid var(--hair);
+  color: inherit; text-align: left; cursor: pointer; font: inherit;
+  transition: padding-left .45s var(--ease-out), background .4s ease;
+}
+.cab-n { font-family: var(--display); font-style: italic; font-size: 20px; color: var(--accent); }
+.cab-name { font-family: var(--display); font-weight: 500; font-size: clamp(1.8rem, 3.2vw, 2.8rem); line-height: 1.05; color: var(--ink-3); transition: color .4s ease; }
+.cab-note { justify-self: end; text-align: right; white-space: nowrap; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); opacity: 0; transform: translateX(-8px); transition: opacity .4s ease, transform .5s var(--ease-out); }
+.cab-note abbr { text-decoration: none; cursor: help; border-bottom: 1px dotted var(--ink-3); }
+.cab-item:hover .cab-name, .cab-item.on .cab-name { color: var(--ink); }
+.cab-item.on { padding-left: 18px; background: linear-gradient(90deg, oklch(0.56 0.17 25 / 0.12), transparent 75%); }
+.cab-item.on .cab-name { font-style: italic; color: var(--accent-soft); }
+.cab-item.on .cab-note { opacity: 1; transform: none; }
+@media (max-width: 860px) {
+  .cabinet { grid-template-columns: 1fr; }
+  .cab-stage { max-width: 260px; }
+  .cab-item { grid-template-columns: 40px minmax(0, 1fr); }
+  .cab-note { grid-column: 2; justify-self: start; text-align: left; opacity: 1; transform: none; max-width: none; }
+  .cab-item:not(.on) .cab-note { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cab-ring { animation: none; }
+  .cab-art, .cab-art.on .cab-ico svg > * { transition: none; animation: none; stroke-dashoffset: 0; }
+}
 
 /* =========================================================================
    VI · CONTACT — the page closes in deep red
