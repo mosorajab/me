@@ -189,6 +189,38 @@
     });
   });
 
+  /* ---- off the clock: the dial shows the pastime you point at ------- */
+  (function cabinet() {
+    var cab = document.getElementById("cabinet");
+    if (!cab) return;
+    var items = qsa(".cab-item", cab), arts = qsa(".cab-art", cab);
+    var ring = cab.querySelector(".cab-ring"), count = document.getElementById("cabCount");
+    var numerals = ["i", "ii", "iii", "iv", "v", "vi"];
+    qsa(".cab-ico svg > *", cab).forEach(function (el) { el.setAttribute("pathLength", "1"); });
+    var cur = 0, lastTouch = 0, inView = false;
+    function show(i) {
+      if (i === cur) return;
+      cur = i;
+      items.forEach(function (b, k) { b.classList.toggle("on", k === i); b.setAttribute("aria-pressed", k === i ? "true" : "false"); });
+      arts.forEach(function (a, k) { a.classList.toggle("on", k === i); });
+      if (ring) ring.style.transform = "rotate(" + i * 60 + "deg)";
+      if (count) count.textContent = numerals[i] + " / vi";
+    }
+    items.forEach(function (b, k) {
+      var pick = function () { lastTouch = Date.now(); show(k); };
+      b.addEventListener("click", pick);
+      b.addEventListener("focus", pick);
+      if (fine) b.addEventListener("pointerenter", pick);
+    });
+    // while it is on screen and nobody is choosing, turn slowly through them
+    if (!reduce) {
+      if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }).observe(cab);
+      setInterval(function () {
+        if (inView && Date.now() - lastTouch > 9000) show((cur + 1) % items.length);
+      }, 3800);
+    }
+  })();
+
   /* ---- staggered groups ---------------------------------------------- */
   (function setupStagger() {
     var groups = qsa("[data-stagger]");
