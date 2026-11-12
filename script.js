@@ -107,10 +107,14 @@
     }
     // cells are counted from the right edge (k) and top (r), matching the
     // CSS grid on .hero-bg, which is anchored right/top
+    var markRow = 1;
     function setMark(start) {
+      // first row whose cells sit fully below the fixed nav
+      var s = Math.max(54, Math.min(84, window.innerWidth * 0.06));
+      markRow = Math.max(1, Math.ceil(((nav ? nav.offsetHeight : 64) + 8) / s));
       placed = {};
       MARK.forEach(function (v, i) {
-        placed[(3 - i % 3) + "," + (1 + Math.floor(i / 3))] = { v: v ? 2 : 1, t: reduce ? -1e9 : start + i * 70 };
+        placed[(3 - i % 3) + "," + (markRow + Math.floor(i / 3))] = { v: v ? 2 : 1, t: reduce ? -1e9 : start + i * 70 };
       });
     }
     function cell(k, r) { return [W - (k + 1) * S + 1, r * S + 1, S - 1, S - 1]; }
@@ -167,7 +171,7 @@
       S = Math.max(54, Math.min(84, window.innerWidth * 0.06));   // clamp(54px, 6vw, 84px)
       cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
       cvs.style.width = W + "px"; cvs.style.height = H + "px";
-      if (hint) { hint.style.top = (4 * S + 14) + "px"; hint.style.right = S + "px"; }
+      if (hint) { hint.style.top = ((markRow + 3) * S + 14) + "px"; hint.style.right = S + "px"; }
       kick();
     }
     function cellAt(e) {
