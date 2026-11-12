@@ -71,8 +71,8 @@
     });
   }
 
-  /* ---- keyboard: 1–7 jump to sections, I opens the index ------------- */
-  var jumpTo = ["about", "work", "mosaic", "projects", "writing", "collections", "contact"];
+  /* ---- keyboard: 1–6 jump to sections, I opens the index ------------- */
+  var jumpTo = ["about", "work", "projects", "writing", "collections", "contact"];
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") { setIndex(false); return; }
     if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
@@ -322,32 +322,6 @@
       else rio.observe(el);
     });
     setTimeout(function () { reveals.forEach(show); }, 2800);
-  }
-
-  /* ---- mosaic logo glyph: builds tile-by-tile when in view ----------- */
-  var mGlyph = document.getElementById("mosaicGlyph");
-  if (mGlyph) {
-    if (reduce) {
-      mGlyph.classList.add("live");
-    } else {
-      mGlyph.classList.add("build");
-      var fireGlyph = function () {
-        if (mGlyph._done) return; mGlyph._done = true;
-        void mGlyph.offsetWidth;
-        mGlyph.classList.add("go");
-        setTimeout(function () { mGlyph.classList.add("live"); }, 900);
-      };
-      if ("IntersectionObserver" in window) {
-        var gio = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) { if (e.isIntersecting) { fireGlyph(); gio.unobserve(e.target); } });
-        }, { threshold: 0.4 });
-        if (mGlyph.getBoundingClientRect().top < (window.innerHeight || 800) * 0.85) fireGlyph();
-        else gio.observe(mGlyph);
-        setTimeout(fireGlyph, 4000);
-      } else {
-        fireGlyph();
-      }
-    }
   }
 
   /* ---- draw-in: icon strokes and the timeline track ------------------ */
