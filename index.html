@@ -11,34 +11,67 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet" />
 <!-- Bump ?v= on styles.css and script.js whenever either changes: GitHub Pages serves them under a fixed URL, so browsers that visited before keep showing the old version for a while. -->
-<link rel="stylesheet" href="styles.css?v=20261028" />
+<link rel="stylesheet" href="styles.css?v=20261112" />
 </head>
 <body>
 
 <div class="scroll-progress" id="progress" aria-hidden="true"></div>
 
 <!-- ============================ NAV ============================ -->
-<nav class="nav" id="nav">
+<nav class="nav" id="nav" aria-label="Primary">
   <div class="nav-inner">
     <a class="brand" href="#top" aria-label="Mohamed Sohail Rajab — home">
       <span class="mark" id="navMark" aria-hidden="true"><i></i><i class="a"></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i></i></span>
       <span class="name">M.&nbsp;S.&nbsp;Rajab</span>
     </a>
-    <div class="nav-links" id="navlinks">
-      <a href="#about"><span class="n">01</span>About</a>
-      <a href="#work"><span class="n">02</span>Work</a>
-      <a href="#mosaic"><span class="n">03</span>Mosaic</a>
-      <a href="#projects"><span class="n">04</span>Projects</a>
-      <a href="#writing"><span class="n">05</span>Writing</a>
-      <a href="#collections"><span class="n">06</span>Collections</a>
-    </div>
+    <a class="nav-now" id="navNow" href="#top" aria-live="polite" tabindex="-1">
+      <span class="n" id="navNowN">00</span><span class="t" id="navNowT">Intro</span>
+      <span class="bar" aria-hidden="true"><i id="navNowBar"></i></span>
+    </a>
     <div class="nav-actions">
       <a class="nav-cta" href="#contact">Get in touch</a>
-      <button class="nav-toggle" id="navToggle" type="button" aria-controls="navlinks" aria-expanded="false" aria-label="Open menu">
-        <span class="bars" aria-hidden="true"><i></i><i></i></span>
+      <button class="nav-index" id="indexOpen" type="button" aria-controls="index" aria-expanded="false">
+        <span class="bars" aria-hidden="true"><i></i><i></i></span><span class="lbl">Index</span>
       </button>
     </div>
   </div>
+</nav>
+
+<!-- ============================ INDEX (full-screen menu) ============================ -->
+<div class="index" id="index" role="dialog" aria-modal="true" aria-label="Site index" hidden>
+  <div class="index-top">
+    <span class="mono-label">Index</span>
+    <button class="index-close" id="indexClose" type="button" aria-label="Close index">Close <span aria-hidden="true">×</span></button>
+  </div>
+  <ol class="index-list">
+    <li style="--i:0"><a href="#about" data-spy="about"><span class="ix-n">01</span><span class="ix-name">About</span><span class="ix-sub">Profile</span></a></li>
+    <li style="--i:1"><a href="#work" data-spy="work"><span class="ix-n">02</span><span class="ix-name">Experience</span><span class="ix-sub">2020 → now</span></a></li>
+    <li style="--i:2"><a href="#mosaic" data-spy="mosaic"><span class="ix-n">03</span><span class="ix-name">Mosaic Systems</span><span class="ix-sub">The company</span></a></li>
+    <li style="--i:3"><a href="#projects" data-spy="projects"><span class="ix-n">04</span><span class="ix-name">Projects</span><span class="ix-sub">Home lab</span></a></li>
+    <li style="--i:4"><a href="#writing" data-spy="writing"><span class="ix-n">05</span><span class="ix-name">Writing</span><span class="ix-sub">Essays &amp; notes</span></a></li>
+    <li style="--i:5"><a href="#collections" data-spy="collections"><span class="ix-n">06</span><span class="ix-name">Collections</span><span class="ix-sub">Off the clock</span></a></li>
+    <li style="--i:6"><a href="#contact" data-spy="contact"><span class="ix-n">07</span><span class="ix-name">Contact</span><span class="ix-sub">Say hello</span></a></li>
+  </ol>
+  <div class="index-foot">
+    <span class="ix-links">
+      <a href="https://github.com/mosorajab" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://mosorr.substack.com" target="_blank" rel="noopener">Substack</a>
+      <a href="https://medium.com/@mosorr" target="_blank" rel="noopener">Medium</a>
+      <a href="https://www.linkedin.com/in/mohamedsohailrajab/" target="_blank" rel="noopener">LinkedIn</a>
+    </span>
+    <span class="kbd-tip">Press <kbd>1</kbd>–<kbd>7</kbd> to jump · <kbd>Esc</kbd> to close</span>
+  </div>
+</div>
+
+<!-- ============================ SECTION RAIL (desktop) ============================ -->
+<nav class="rail" id="rail" aria-label="Sections">
+  <a href="#about" data-spy="about"><span class="r-label">01 About</span><span class="r-tick" aria-hidden="true"></span></a>
+  <a href="#work" data-spy="work"><span class="r-label">02 Experience</span><span class="r-tick" aria-hidden="true"></span></a>
+  <a href="#mosaic" data-spy="mosaic"><span class="r-label">03 Mosaic</span><span class="r-tick" aria-hidden="true"></span></a>
+  <a href="#projects" data-spy="projects"><span class="r-label">04 Projects</span><span class="r-tick" aria-hidden="true"></span></a>
+  <a href="#writing" data-spy="writing"><span class="r-label">05 Writing</span><span class="r-tick" aria-hidden="true"></span></a>
+  <a href="#collections" data-spy="collections"><span class="r-label">06 Collections</span><span class="r-tick" aria-hidden="true"></span></a>
+  <a href="#contact" data-spy="contact"><span class="r-label">07 Contact</span><span class="r-tick" aria-hidden="true"></span></a>
 </nav>
 
 <main class="shell" id="top">
@@ -112,161 +145,116 @@
   </section>
 
   <!-- ============================ ABOUT ============================ -->
-  <section class="sec-pad" id="about" data-screen-label="About">
-    <div class="sec-head reveal">
-      <div class="top">
-        <span class="idx">01 / About</span>
-        <span class="title">Profile</span>
-      </div>
-    </div>
-    <hr class="rule" />
+  <section class="sec-pad" id="about" data-screen-label="About" data-n="01" data-label="About">
+    <header class="sec-head reveal">
+      <span class="idx">01 / About</span>
+      <h2 class="sec-title">Profile</h2>
+    </header>
 
-    <div class="about-grid" style="padding-top:40px">
-      <aside class="about-aside reveal">
-        <p class="about-statement">
-          I build machine-learning systems the way I appreciate a well-made <em>object</em>: with attention to mechanism, material, and the quiet details most people never notice.
-        </p>
-      </aside>
+    <div class="about-grid">
+      <p class="about-statement reveal">
+        I build machine-learning systems the way I appreciate a well-made <em>object</em>: with attention to mechanism, material, and the quiet details most people never notice.
+      </p>
 
       <div class="about-body reveal" data-d="1">
         <p>
-          I'm a Machine Learning Engineer at <strong>Derivco</strong>, where I take models from research into dependable production. My background is in data science; I completed an honours degree <strong>cum laude</strong>, built on an undergraduate foundation in application development, so I'm as comfortable shipping the interface as I am training the model behind it.
+          Machine Learning Engineer at <strong>Derivco</strong>, taking models from research into dependable production. Honours in data science (<em>cum laude</em>) on a foundation in application development, so I ship the interface as readily as the model behind it.
         </p>
-        <p>
-          Alongside that, I run <strong>Mosaic Systems</strong>, a technology company delivering real, tech-forward solutions to its clients, across AI, data, automation, home labs, and hardware. It's where I take ideas the whole way: practical intelligence, built deliberately, for real use.
-        </p>
-        <p>
-          The thread through all of it is craft. I'm drawn to things that are engineered to last and rewarding to use, which is probably why, away from the keyboard, I'm usually found with a fountain pen, a mechanical watch, or a good book in reach.
-        </p>
-        <div class="about-tags" data-stagger data-stagger-step="55">
-          <span class="tag">Applied ML</span>
-          <span class="tag">Production Systems</span>
-          <span class="tag">Data Science</span>
-          <span class="tag">App Development</span>
-          <span class="tag">Azure AI</span>
-          <span class="tag">Research → Deployment</span>
-        </div>
+        <ul class="cap-grid draw" data-stagger data-stagger-step="60" aria-label="What I work on">
+          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M8 7h8M7 8.8l4 6.4M17 8.8l-4 6.4"/></svg></span><span class="cap-name">Applied ML</span></li>
+          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5"/><path d="M3 16.5L12 21l9-4.5"/></svg></span><span class="cap-name">Production systems</span></li>
+          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20v-6M10 20V7M15 20v-9M20 20V4M3 21h18"/></svg></span><span class="cap-name">Data science</span></li>
+          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span><span class="cap-name">App development</span></li>
+          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.4-1.2A4.6 4.6 0 0117 18z"/></svg></span><span class="cap-name">Azure AI</span></li>
+          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><path d="M7 12h12M14 7l5 5-5 5"/></svg></span><span class="cap-name">Research → deployment</span></li>
+        </ul>
       </div>
     </div>
+    <a class="next-link" href="#work"><span>Next</span><span class="nl-name">02 Experience</span><span class="nl-arr" aria-hidden="true">↓</span></a>
   </section>
 
-  <!-- ============================ WORK / CV ============================ -->
-  <section class="sec-pad cv" id="work" data-screen-label="Work">
-    <div class="sec-head reveal">
-      <div class="top">
-        <span class="idx">02 / Work &amp; Education</span>
-        <span class="title">Curriculum Vitae</span>
-      </div>
-    </div>
+  <!-- ============================ EXPERIENCE / TIMELINE ============================ -->
+  <section class="sec-pad" id="work" data-screen-label="Work" data-n="02" data-label="Experience">
+    <header class="sec-head reveal">
+      <span class="idx">02 / Experience</span>
+      <h2 class="sec-title">Work &amp; education</h2>
+    </header>
 
-    <div data-stagger data-stagger-step="90">
-      <div class="cv-row">
-        <span class="yr">2024 — Now</span>
-        <span class="role">Machine Learning Engineer</span>
-        <span class="org">Derivco<span class="place">Software &amp; Data</span></span>
-        <span class="note">Research models into reliable production systems.</span>
-        <span class="badge">Current</span>
-      </div>
-      <div class="cv-row">
-        <span class="yr">2025 — Now</span>
-        <span class="role">Applied AI &amp; Engineering</span>
-        <span class="org">Mosaic Systems<span class="place">Technology Company</span></span>
-        <span class="note">Building practical intelligence, deliberately.</span>
-        <span class="badge">Current</span>
-      </div>
-      <div class="cv-row">
-        <span class="yr">2023</span>
-        <span class="role">Honours, Data Analytics</span>
-        <span class="org">Graduated Cum Laude<span class="place">Postgraduate</span></span>
-        <span class="note">Statistics, machine learning &amp; modelling.</span>
-      </div>
-      <div class="cv-row">
-        <span class="yr">2020 — 2022</span>
-        <span class="role">BCad, Computer Science majoring in Application Development</span>
-        <span class="org">Graduated Cum Laude<span class="place">Software Engineering</span></span>
-        <span class="note">Foundations in building &amp; shipping software.</span>
-      </div>
-    </div>
-
+    <ol class="tl" id="timeline" data-stagger data-stagger-step="110">
+      <li class="tl-item">
+        <span class="tl-yr">2020 — 2022</span>
+        <span class="tl-node" aria-hidden="true"></span>
+        <h3 class="tl-role">BCad, Computer Science</h3>
+        <span class="tl-org">Application Development · Cum Laude</span>
+      </li>
+      <li class="tl-item">
+        <span class="tl-yr">2023</span>
+        <span class="tl-node" aria-hidden="true"></span>
+        <h3 class="tl-role">Honours, Data Analytics</h3>
+        <span class="tl-org">Postgraduate · Cum Laude</span>
+      </li>
+      <li class="tl-item current">
+        <span class="tl-yr">2024 — Now</span>
+        <span class="tl-node" aria-hidden="true"></span>
+        <h3 class="tl-role">Machine Learning Engineer</h3>
+        <span class="tl-org">Derivco</span>
+        <span class="tl-badge">Current</span>
+      </li>
+      <li class="tl-item current">
+        <span class="tl-yr">2025 — Now</span>
+        <span class="tl-node" aria-hidden="true"></span>
+        <h3 class="tl-role">Applied AI &amp; Engineering</h3>
+        <span class="tl-org">Mosaic Systems</span>
+        <span class="tl-badge">Current</span>
+      </li>
+    </ol>
+    <a class="next-link" href="#mosaic"><span>Next</span><span class="nl-name">03 Mosaic Systems</span><span class="nl-arr" aria-hidden="true">↓</span></a>
   </section>
 
   <!-- ============================ MOSAIC SYSTEMS ============================ -->
-  <section class="sec-pad" id="mosaic" data-screen-label="Mosaic Systems">
-    <div class="sec-head reveal">
-      <div class="top">
-        <span class="idx">03 / The Company</span>
-        <a class="sec-visit" href="https://mosaicsystem5.com" target="_blank" rel="noopener">mosaicsystem5.com<span class="v-arr">↗</span></a>
-      </div>
-    </div>
+  <section class="sec-pad" id="mosaic" data-screen-label="Mosaic Systems" data-n="03" data-label="Mosaic">
+    <header class="sec-head reveal">
+      <span class="idx">03 / The Company</span>
+      <h2 class="sec-title">Mosaic Systems</h2>
+    </header>
 
     <div class="mosaic reveal">
       <div class="mosaic-inner">
         <div class="m-lead">
-          <div class="m-eyebrow"><span class="dot" aria-hidden="true"></span><span class="mono-label" style="color:inherit">Technology Company · Est. 2025</span></div>
           <div class="m-logo">
             <span class="glyph" id="mosaicGlyph" aria-hidden="true"><i class="lit"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="lit"></i></span>
-            <span class="m-name">Mosaic Systems</span>
+            <span class="m-eyebrow mono-label">Technology Company · Est. 2025</span>
           </div>
-          <p class="m-statement">
-            Real solutions, <em>built</em> from the right pieces.
-          </p>
-          <p class="m-copy">
-            A technology company delivering tech-forward solutions across AI, data, automation, home labs, and hardware — taken the whole way, from first principle to working system.
-          </p>
+          <p class="m-statement">Real solutions, <em>built</em> from the right pieces.</p>
           <a class="m-cta" href="https://mosaicsystem5.com" target="_blank" rel="noopener">Visit mosaicsystem5.com<span class="v-arr">↗</span></a>
         </div>
 
-        <div class="m-approach">
-          <span class="m-approach-label">Built deliberately, like a mosaic</span>
-          <ol data-stagger data-stagger-step="80">
-            <li><span class="s-n">01</span><span class="s-t">Understand</span><span class="s-d">The real problem, not the buzzword.</span></li>
-            <li><span class="s-n">02</span><span class="s-t">Assemble</span><span class="s-d">The right pieces, chosen on merit.</span></li>
-            <li><span class="s-n">03</span><span class="s-t">Ship</span><span class="s-d">Into production, tested &amp; observable.</span></li>
-            <li><span class="s-n">04</span><span class="s-t">Refine</span><span class="s-d">Measure, tune, keep it sharp.</span></li>
-          </ol>
-        </div>
+        <ol class="m-steps" aria-label="How we work">
+          <li><span class="s-n">01</span><span class="s-t">Understand</span></li>
+          <li><span class="s-n">02</span><span class="s-t">Assemble</span></li>
+          <li><span class="s-n">03</span><span class="s-t">Ship</span></li>
+          <li><span class="s-n">04</span><span class="s-t">Refine</span></li>
+        </ol>
       </div>
 
-      <div class="m-pillars" data-stagger data-stagger-step="70">
-        <div class="m-pillar">
-          <span class="p-n">01</span>
-          <span class="p-name">AI &amp; Automation</span>
-          <span class="p-tags">Applied ML · LLMs · Agents · Vision</span>
-        </div>
-        <div class="m-pillar">
-          <span class="p-n">02</span>
-          <span class="p-name">Data</span>
-          <span class="p-tags">Pipelines · Analytics · Modelling</span>
-        </div>
-        <div class="m-pillar">
-          <span class="p-n">03</span>
-          <span class="p-name">Software</span>
-          <span class="p-tags">Applications · APIs · Tooling</span>
-        </div>
-        <div class="m-pillar">
-          <span class="p-n">04</span>
-          <span class="p-name">Hardware</span>
-          <span class="p-tags">Edge · Sensors · Prototyping</span>
-        </div>
-        <div class="m-pillar">
-          <span class="p-n">05</span>
-          <span class="p-name">Home Labs</span>
-          <span class="p-tags">Self-Hosted · Networking · Servers</span>
-        </div>
-      </div>
+      <ul class="m-pillars draw" data-stagger data-stagger-step="70" aria-label="Solution areas">
+        <li class="m-pillar" title="Applied ML · LLMs · Agents · Vision"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg></span><span class="p-name">AI &amp; Automation</span></li>
+        <li class="m-pillar" title="Pipelines · Analytics · Modelling"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></span><span class="p-name">Data</span></li>
+        <li class="m-pillar" title="Applications · APIs · Tooling"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 13l-2 2 2 2M12 17h4"/></svg></span><span class="p-name">Software</span></li>
+        <li class="m-pillar" title="Edge · Sensors · Prototyping"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="8" height="8"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/></svg></span><span class="p-name">Hardware</span></li>
+        <li class="m-pillar" title="Self-hosted · Networking · Servers"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M11 7h6M11 17h6M7 7h.5M7 17h.5"/></svg></span><span class="p-name">Home Labs</span></li>
+      </ul>
     </div>
+    <a class="next-link" href="#projects"><span>Next</span><span class="nl-name">04 Projects</span><span class="nl-arr" aria-hidden="true">↓</span></a>
   </section>
 
   <!-- ============================ PROJECTS ============================ -->
-  <section class="sec-pad projects" id="projects" data-screen-label="Projects">
-    <div class="sec-head reveal">
-      <div class="top">
-        <span class="idx">04 / Projects</span>
-        <span class="title">Home Lab</span>
-      </div>
-    </div>
-
-    <p class="proj-intro reveal">Things I build at home: mostly to <em>learn by doing</em>, and because hardware is its own kind of craft.</p>
+  <section class="sec-pad projects" id="projects" data-screen-label="Projects" data-n="04" data-label="Projects">
+    <header class="sec-head reveal">
+      <span class="idx">04 / Projects</span>
+      <h2 class="sec-title">Home lab</h2>
+      <p class="sec-sub">Built at home, mostly to <em>learn by doing</em>.</p>
+    </header>
 
     <div class="proj-grid" data-stagger data-stagger-step="110">
       <article class="proj-card">
@@ -282,11 +270,10 @@
             <span class="proj-status"><span class="led" aria-hidden="true"></span>Running</span>
           </div>
           <h3 class="p-title">Home Media Server</h3>
-          <p class="p-desc">A personal movie-and-media streaming service: my own hard-drive library served from a Raspberry Pi and streamable to any screen in the house — and to any trusted device, anywhere in the world, over a VPN. My own little cinema, no subscription required.</p>
+          <p class="p-desc">My own film library, served from a Raspberry Pi to any screen at home, or anywhere over a VPN.</p>
           <div class="proj-stack">
             <span class="chip">Raspberry Pi</span>
             <span class="chip">Linux</span>
-            <span class="chip">HDD Library</span>
             <span class="chip">Media Streaming</span>
             <span class="chip">Self-Hosted</span>
           </div>
@@ -306,134 +293,84 @@
             <span class="proj-status"><span class="led" aria-hidden="true"></span>Running</span>
           </div>
           <h3 class="p-title">AI Home Surveillance</h3>
-          <p class="p-desc">Old webcams repurposed into a smart security system: computer-vision detection flags activity, and online LLMs interpret each event and describe what's happening in plain language.</p>
+          <p class="p-desc">Old webcams turned into a smart security system: vision flags activity, an LLM describes it.</p>
           <div class="proj-stack">
             <span class="chip">Computer Vision</span>
             <span class="chip">LLM APIs</span>
             <span class="chip">Python</span>
-            <span class="chip">Repurposed Webcams</span>
             <span class="chip">Real-Time Alerts</span>
           </div>
         </div>
       </article>
     </div>
+    <a class="next-link" href="#writing"><span>Next</span><span class="nl-name">05 Writing</span><span class="nl-arr" aria-hidden="true">↓</span></a>
   </section>
 
   <!-- ============================ WRITING ============================ -->
-  <section class="sec-pad writing" id="writing" data-screen-label="Writing">
-    <div class="sec-head reveal">
-      <div class="top">
-        <span class="idx">05 / Writing</span>
-        <span class="title">Selected · Medium &amp; Substack</span>
+  <section class="sec-pad writing" id="writing" data-screen-label="Writing" data-n="05" data-label="Writing">
+    <header class="sec-head reveal">
+      <span class="idx">05 / Writing</span>
+      <h2 class="sec-title">Writing</h2>
+      <p class="sec-sub">On Medium &amp; Substack.</p>
+    </header>
+
+    <div class="posts">
+      <a class="post-feature reveal" href="https://mosorr.substack.com/p/the-chance-of-winning" target="_blank" rel="noopener">
+        <span class="pf-art" aria-hidden="true"><i></i><i class="a"></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i></i></span>
+        <span class="pf-meta">Latest · Essay · 27 Oct 2026</span>
+        <span class="pf-title">The Chance of Winning</span>
+        <span class="pf-desc">Why a chance to win makes us play.</span>
+        <span class="pf-cta">Read on Substack<span class="arrow" aria-hidden="true">↗</span></span>
+      </a>
+
+      <div class="post-list" data-stagger data-stagger-step="80">
+        <a class="post" href="https://medium.com/@mosorr/steel-and-stories-the-charm-of-the-higonokami-3f3b955876e0" target="_blank" rel="noopener">
+          <span class="p-meta">03 Sep 2024 · Craft</span>
+          <span class="p-t">Steel and Stories: The Charm of the Higonokami</span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="post" href="https://medium.com/@mosorr/ai-900-azure-ai-fundamentals-all-you-nee-063d5850b730" target="_blank" rel="noopener">
+          <span class="p-meta">20 Aug 2024 · Machine Learning</span>
+          <span class="p-t">AI-900: Azure AI Fundamentals — All You Need</span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="post" href="https://medium.com/@mosorr/the-timeless-allure-of-fountain-pens-why-theyre-more-than-just-writing-instruments-bcdf04050205" target="_blank" rel="noopener">
+          <span class="p-meta">20 Aug 2024 · Craft</span>
+          <span class="p-t">The Timeless Allure of Fountain Pens</span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
       </div>
     </div>
-
-    <div data-stagger data-stagger-step="80">
-      <a class="article" href="https://mosorr.substack.com/p/the-chance-of-winning" target="_blank" rel="noopener">
-        <span class="date">27 Oct 2026</span>
-        <span class="head">
-          <span class="t">The Chance of Winning</span>
-          <span class="d">An analysis of the psyche, and why a chance to win makes us play.</span>
-        </span>
-        <span class="cat">Essay</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="article" href="https://medium.com/@mosorr/steel-and-stories-the-charm-of-the-higonokami-3f3b955876e0" target="_blank" rel="noopener">
-        <span class="date">03 Sep 2024</span>
-        <span class="head">
-          <span class="t">Steel and Stories: The Charm of the Higonokami</span>
-          <span class="d">History wrapped in steel, brass, and time-worn tradition.</span>
-        </span>
-        <span class="cat">Craft</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="article" href="https://medium.com/@mosorr/ai-900-azure-ai-fundamentals-all-you-nee-063d5850b730" target="_blank" rel="noopener">
-        <span class="date">20 Aug 2024</span>
-        <span class="head">
-          <span class="t">AI-900: Azure AI Fundamentals — All You Need</span>
-          <span class="d">A working engineer's guide to the Azure AI Fundamentals certification.</span>
-        </span>
-        <span class="cat">Machine Learning</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="article" href="https://medium.com/@mosorr/the-timeless-allure-of-fountain-pens-why-theyre-more-than-just-writing-instruments-bcdf04050205" target="_blank" rel="noopener">
-        <span class="date">20 Aug 2024</span>
-        <span class="head">
-          <span class="t">The Timeless Allure of Fountain Pens</span>
-          <span class="d">Why they're more than just writing instruments.</span>
-        </span>
-        <span class="cat">Craft</span>
-        <span class="arrow">↗</span>
-      </a>
-    </div>
+    <a class="next-link" href="#collections"><span>Next</span><span class="nl-name">06 Collections</span><span class="nl-arr" aria-hidden="true">↓</span></a>
   </section>
 
   <!-- ============================ COLLECTIONS ============================ -->
-  <section class="sec-pad collections" id="collections" data-screen-label="Collections">
-    <div class="sec-head reveal">
-      <div class="top">
-        <span class="idx">06 / Collections</span>
-        <span class="title">Off the clock</span>
-      </div>
-    </div>
+  <section class="sec-pad collections" id="collections" data-screen-label="Collections" data-n="06" data-label="Collections">
+    <header class="sec-head reveal">
+      <span class="idx">06 / Collections</span>
+      <h2 class="sec-title">Off the clock</h2>
+      <p class="sec-sub">The same eye for <em>mechanism and material</em>.</p>
+    </header>
 
-    <p class="coll-intro reveal">The same eye for <em>mechanism and material</em> that I bring to engineering, applied to things I keep.</p>
-
-    <div class="coll-grid" data-stagger data-stagger-step="80">
-      <div class="coll-cell">
-        <span class="num">01</span>
-        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19l9-9 3 3-9 9H5v-3z"/><path d="M14 10l2-2 3 3-2 2"/></svg></span>
-        <div>
-          <div class="c-name">Fountain Pens</div>
-          <div class="c-desc">Nibs, inks &amp; the<br />pleasure of writing</div>
-        </div>
-      </div>
-      <div class="coll-cell">
-        <span class="num">02</span>
-        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/><path d="M9 2h6M9 22h6"/></svg></span>
-        <div>
-          <div class="c-name">Horology</div>
-          <div class="c-desc">Mechanical movements<br />&amp; honest complications</div>
-        </div>
-      </div>
-      <div class="coll-cell">
-        <span class="num">03</span>
-        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9h18M3 15h18M8 5v14M16 5v14"/></svg></span>
-        <div>
-          <div class="c-name">Film</div>
-          <div class="c-desc">Frame, light<br />&amp; the long cut</div>
-        </div>
-      </div>
-      <div class="coll-cell">
-        <span class="num">04</span>
-        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 3h4l-1 4h-2l-1-4z"/><path d="M9 7h6v3a3 3 0 01-1 2l-1 8h-2l-1-8a3 3 0 01-1-2V7z"/></svg></span>
-        <div>
-          <div class="c-name">Fragrance</div>
-          <div class="c-desc">Olfactory notes<br />&amp; the art of accords</div>
-        </div>
-      </div>
-      <div class="coll-cell">
-        <span class="num">05</span>
-        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h6v16H6a2 2 0 00-2 2V5z"/><path d="M20 5a2 2 0 00-2-2h-6v16h6a2 2 0 012 2V5z"/></svg></span>
-        <div>
-          <div class="c-name">Books</div>
-          <div class="c-desc">Margins, markups<br />&amp; slow reading</div>
-        </div>
-      </div>
-    </div>
+    <ul class="coll-grid draw" data-stagger data-stagger-step="80">
+      <li class="coll-cell"><span class="num">01</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19l9-9 3 3-9 9H5v-3z"/><path d="M14 10l2-2 3 3-2 2"/></svg></span><span class="c-name">Fountain Pens</span></li>
+      <li class="coll-cell"><span class="num">02</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/><path d="M9 2h6M9 22h6"/></svg></span><span class="c-name">Horology</span></li>
+      <li class="coll-cell"><span class="num">03</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9h18M3 15h18M8 5v14M16 5v14"/></svg></span><span class="c-name">Film</span></li>
+      <li class="coll-cell"><span class="num">04</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 3h4l-1 4h-2l-1-4z"/><path d="M9 7h6v3a3 3 0 01-1 2l-1 8h-2l-1-8a3 3 0 01-1-2V7z"/></svg></span><span class="c-name">Fragrance</span></li>
+      <li class="coll-cell"><span class="num">05</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h6v16H6a2 2 0 00-2 2V5z"/><path d="M20 5a2 2 0 00-2-2h-6v16h6a2 2 0 012 2V5z"/></svg></span><span class="c-name">Books</span></li>
+    </ul>
+    <a class="next-link" href="#contact"><span>Next</span><span class="nl-name">07 Contact</span><span class="nl-arr" aria-hidden="true">↓</span></a>
   </section>
 
   <!-- ============================ CONTACT ============================ -->
-  <section class="sec-pad contact" id="contact" data-screen-label="Contact">
-    <div class="sec-head reveal">
-      <div class="top">
-        <span class="idx">07 / Contact</span>
-        <span class="title">Open to good work</span>
-      </div>
-    </div>
+  <section class="sec-pad contact" id="contact" data-screen-label="Contact" data-n="07" data-label="Contact">
+    <header class="sec-head reveal">
+      <span class="idx">07 / Contact</span>
+      <h2 class="sec-title">Let's make something <em>considered.</em></h2>
+      <p class="sec-sub">Open to good work.</p>
+    </header>
 
     <div class="contact-grid">
-      <h2 class="contact-head reveal">Let's make<br />something <em>considered.</em></h2>
       <div class="contact-links" data-stagger data-stagger-step="75">
         <a href="mailto:mohamedsrajab@gmail.com">
           <span class="n">01</span><span>Email — mohamedsrajab@gmail.com</span><span class="h">↗</span>
@@ -457,31 +394,25 @@
   <!-- ============================ FOOTER ============================ -->
   <footer class="colophon">
     <div class="col">
-      <span class="lab">Colophon</span>
-      Set in Spectral &amp; IBM&nbsp;Plex&nbsp;Mono.<br />
-      Designed on a Swiss grid, 2026.
-    </div>
-    <div class="col">
       <span class="lab">Mohamed Sohail Rajab</span>
-      Machine Learning Engineer<br />
-      @ Derivco
+      Machine Learning Engineer @ Derivco
     </div>
     <div class="col">
-      <span class="lab">Index</span>
-      <a href="#about">About</a> · <a href="#work">Work</a> · <a href="#mosaic">Mosaic</a><br />
-      <a href="#projects">Projects</a> · <a href="#writing">Writing</a> · <a href="#collections">Collections</a><br />
-      <a href="#contact">Contact</a>
-      <span class="kbd-tip">Press <kbd>1</kbd>–<kbd>7</kbd> to jump between sections</span>
+      <span class="lab">Elsewhere</span>
+      <a href="https://github.com/mosorajab" target="_blank" rel="noopener">GitHub</a> · <a href="https://mosorr.substack.com" target="_blank" rel="noopener">Substack</a> · <a href="https://medium.com/@mosorr" target="_blank" rel="noopener">Medium</a> · <a href="https://www.linkedin.com/in/mohamedsohailrajab/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="col kbd-col">
+      <span class="lab">Navigate</span>
+      <span class="kbd-tip">Press <kbd>1</kbd>–<kbd>7</kbd> to jump · <kbd>I</kbd> for the index</span>
     </div>
     <div class="col">
       <span class="lab">© 2026</span>
-      All rights reserved.<br />
-      Built with intention.
+      Set in Spectral &amp; IBM&nbsp;Plex&nbsp;Mono.
     </div>
   </footer>
 
 </main>
 
-<script src="script.js?v=20261028"></script>
+<script src="script.js?v=20261112"></script>
 </body>
 </html>
