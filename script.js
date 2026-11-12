@@ -4,32 +4,12 @@
 (function () {
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var qsa = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-
-  /* ---- nav scrolled state + scroll progress -------------------------- */
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var docEl = document.documentElement;
   var nav = document.getElementById("nav");
   var prog = document.getElementById("progress");
-  var heroLayers = qsa("[data-parallax]");
-  var docEl = document.documentElement;
-  function onScroll() {
-    var y = window.scrollY || docEl.scrollTop;
-    if (nav) nav.classList.toggle("scrolled", y > 12);
-    if (prog) {
-      var max = docEl.scrollHeight - docEl.clientHeight;
-      prog.style.transform = "scaleX(" + (max > 0 ? Math.min(1, y / max) : 0) + ")";
-    }
-    /* subtle hero grid parallax */
-    heroLayers.forEach(function (el) {
-      if (reduce || document.body.classList.contains("no-motion")) {
-        el.style.transform = "";
-      } else if (y < window.innerHeight * 1.2) {
-        el.style.transform = "translate3d(0," + (y * 0.14).toFixed(1) + "px,0)";
-      }
-    });
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
-  onScroll();
 
   /* ---- index: full-screen section menu ------------------------------- */
   var index = document.getElementById("index");
@@ -64,7 +44,6 @@
     index.addEventListener("keydown", function (e) {
       if (e.key !== "Tab") return;
       var f = qsa("a, button", index);
-      if (!f.length) return;
       var first = f[0], last = f[f.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
@@ -87,155 +66,19 @@
     sec.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
   });
 
-  /* ---- hero mosaic: the brand mark on the grid, lit by the pointer --- */
-  (function heroTiles() {
-    var hero = document.getElementById("hero");
-    var cvs = document.getElementById("heroTiles");
-    var hint = document.getElementById("heroHint");
-    if (!hero || !cvs || !cvs.getContext) return;
-    var ctx = cvs.getContext("2d");
-    var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-    var MARK = [0, 1, 0, 0, 0, 1, 1, 0, 0];   // same pattern as the nav mark; 1 = accent
-    var W = 0, H = 0, S = 0, dpr = 1, on = false, raf = 0;
-    var placed = {}, heat = {}, hoverKey = null, touched = false;
-    var ink, accent, sand;
-
-    function readColors() {
-      var cs = getComputedStyle(document.documentElement);
-      ink = cs.getPropertyValue("--ink").trim();
-      accent = cs.getPropertyValue("--accent").trim();
-      sand = cs.getPropertyValue("--sand-2").trim() || ink;
-    }
-    // cells are counted from the right edge (k) and top (r), matching the
-    // CSS grid on .hero-bg, which is anchored right/top
-    var markRow = 1;
-    function setMark(start) {
-      // first row whose cells sit fully below the fixed nav
-      var s = Math.max(54, Math.min(84, window.innerWidth * 0.06));
-      markRow = Math.max(1, Math.ceil(((nav ? nav.offsetHeight : 64) + 8) / s));
-      placed = {};
-      MARK.forEach(function (v, i) {
-        placed[(3 - i % 3) + "," + (markRow + Math.floor(i / 3))] = { v: v ? 2 : 1, t: reduce ? -1e9 : start + i * 70 };
-      });
-    }
-    function cell(k, r) { return [W - (k + 1) * S + 1, r * S + 1, S - 1, S - 1]; }
-    // same falloff as the radial mask on .hero-bg, so the trail fades with the grid
-    function mask(x, y) {
-      var dx = (x - 0.82 * W) / (1.2 * W), dy = (y - 0.14 * H) / (0.8 * H);
-      var d = Math.sqrt(dx * dx + dy * dy);
-      return d <= 0.22 ? 1 : d >= 0.72 ? 0 : 1 - (d - 0.22) / 0.5;
-    }
-    function ease(p) { return 1 - Math.pow(1 - p, 3); }
-
-    function draw(now) {
-      var busy = false;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = ink;
-      Object.keys(heat).forEach(function (key) {
-        var h = heat[key];
-        if (h < 0.02) { delete heat[key]; return; }
-        var p = key.split(","), c = cell(+p[0], +p[1]);
-        ctx.globalAlpha = 0.055 * h * mask(c[0] + c[2] / 2, c[1] + c[3] / 2);
-        ctx.fillRect(c[0], c[1], c[2], c[3]);
-        if (key !== hoverKey) { heat[key] = h * 0.92; busy = true; }
-      });
-      Object.keys(placed).forEach(function (key) {
-        var tile = placed[key], p = key.split(","), c = cell(+p[0], +p[1]);
-        var prog = Math.max(0, Math.min(1, (now - tile.t) / 520));
-        if (prog < 1) busy = true;
-        if (prog <= 0) return;
-        var s = c[2] * ease(prog), o = (c[2] - s) / 2;
-        ctx.globalAlpha = prog * (tile.v === 2 ? 0.94 : 1);
-        ctx.fillStyle = tile.v === 2 ? accent : sand;
-        ctx.fillRect(c[0] + o, c[1] + o, s, s);
-      });
-      if (hoverKey) {
-        var hp = hoverKey.split(","), hc = cell(+hp[0], +hp[1]);
-        ctx.globalAlpha = 0.9 * Math.max(mask(hc[0] + hc[2] / 2, hc[1] + hc[3] / 2), placed[hoverKey] ? 1 : 0);
-        ctx.strokeStyle = accent; ctx.lineWidth = 1;
-        ctx.strokeRect(hc[0] + 0.5, hc[1] + 0.5, hc[2] - 1, hc[3] - 1);
-      }
-      ctx.globalAlpha = 1;
-      return busy;
-    }
-    function tick(now) { raf = 0; if (draw(now)) raf = requestAnimationFrame(tick); }
-    function kick() { if (on && !raf) raf = requestAnimationFrame(tick); }
-
-    function size() {
-      on = window.innerWidth >= 1000;
-      cvs.hidden = !on;
-      if (hint) hint.hidden = !(on && fine.matches);
-      if (!on) { hero.classList.remove("tile-hover"); return; }
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = hero.clientWidth; H = hero.clientHeight;
-      S = Math.max(54, Math.min(84, window.innerWidth * 0.06));   // clamp(54px, 6vw, 84px)
-      cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
-      cvs.style.width = W + "px"; cvs.style.height = H + "px";
-      if (hint) { hint.style.top = ((markRow + 3) * S + 14) + "px"; hint.style.right = S + "px"; }
-      kick();
-    }
-    function cellAt(e) {
-      var b = cvs.getBoundingClientRect();
-      var k = Math.floor((W - (e.clientX - b.left)) / S), r = Math.floor((e.clientY - b.top) / S);
-      return k >= 0 && r >= 0 ? k + "," + r : null;
-    }
-    function onText(e) { return !!e.target.closest("a, button, h1, h2, p, .hero-links, .hero-eyebrow"); }
-    function markTouched(v) {
-      touched = v;
-      if (!hint) return;
-      hint.disabled = !v;
-      hint.textContent = v ? "↺ Reset the mark" : "Click the grid to place a tile";
-    }
-
-    hero.addEventListener("pointermove", function (e) {
-      if (!on || !fine.matches) return;
-      var key = onText(e) ? null : cellAt(e);
-      hero.classList.toggle("tile-hover", !!key);
-      if (key === hoverKey) return;
-      hoverKey = key;
-      if (key && !reduce) heat[key] = 1;
-      kick();
-    });
-    hero.addEventListener("pointerleave", function () {
-      hoverKey = null; hero.classList.remove("tile-hover"); kick();
-    });
-    hero.addEventListener("click", function (e) {
-      if (!on || onText(e) || String(window.getSelection ? window.getSelection() : "")) return;
-      var key = cellAt(e);
-      if (!key) return;
-      var cur = placed[key];
-      var next = !cur ? 2 : cur.v === 2 ? 1 : 0;      // empty → accent → ink → empty
-      if (next) placed[key] = { v: next, t: reduce ? -1e9 : performance.now() };
-      else delete placed[key];
-      markTouched(true);
-      kick();
-    });
-    if (hint) hint.addEventListener("click", function () {
-      setMark(performance.now()); markTouched(false); kick();
-    });
-
-    readColors();
-    setMark(performance.now() + 500);
-    size();
-    if ("ResizeObserver" in window) new ResizeObserver(size).observe(hero);
-    else window.addEventListener("resize", size, { passive: true });
-  })();
-
   /* ---- animated nav mark (builds, then pulses) ----------------------- */
   var navMark = document.getElementById("navMark");
   if (navMark) {
-    if (reduce) {
-      navMark.classList.add("live");
-    } else {
+    if (reduce) navMark.classList.add("live");
+    else {
       navMark.classList.add("build");
-      void navMark.offsetWidth;            // force reflow so the transition runs
+      void navMark.offsetWidth;
       navMark.classList.add("go");
       setTimeout(function () { navMark.classList.add("live"); }, 1700);
     }
   }
 
-  /* ---- hero headline: split into rising words ------------------------ */
+  /* ---- hero headline: words sharpen out of a blur, one by one -------- */
   var hl = document.getElementById("heroHeadline");
   if (hl && !reduce) {
     var tmp = document.createElement("div");
@@ -247,137 +90,198 @@
           if (/^\s+$/.test(tok)) out.push(" ");
           else if (tok.length) out.push('<span class="word"><span>' + tok + "</span></span>");
         });
-      } else if (node.nodeName === "BR") {
-        out.push("<br />");
       } else {
-        out.push('<span class="word word-accent"><span>' + node.outerHTML + "</span></span> ");
+        out.push('<span class="word"><span>' + node.outerHTML + "</span></span>");
       }
     });
     hl.innerHTML = out.join("");
-    var words = qsa(".word > span", hl);
-    words.forEach(function (w, i) { w.style.transitionDelay = (0.28 + i * 0.06) + "s"; });
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { hl.classList.add("words-in"); });
-    });
+    qsa(".word > span", hl).forEach(function (w, i) { w.style.transitionDelay = (0.25 + i * 0.09) + "s"; });
+    requestAnimationFrame(function () { requestAnimationFrame(function () { hl.classList.add("words-in"); }); });
   }
+
+  /* ---- hero: a light that follows the pointer across Leonardo -------- */
+  (function heroLight() {
+    var hero = document.getElementById("hero");
+    var plate = document.getElementById("heroPlate");
+    if (!hero || !plate) return;
+    var stage = plate.querySelector(".plate-stage");
+    var target = { x: 0.5, y: 0.42 }, cur = { x: 0.5, y: 0.42 };
+    var lastMove = 0, raf = 0, t0 = performance.now();
+    function frame(now) {
+      raf = 0;
+      // with no pointer for a while (or on touch), the light wanders on its own
+      if (!fine || now - lastMove > 2600) {
+        var t = (now - t0) / 1000;
+        target.x = 0.5 + Math.sin(t * 0.45) * 0.24;
+        target.y = 0.42 + Math.sin(t * 0.31 + 1.3) * 0.22;
+      }
+      cur.x += (target.x - cur.x) * 0.08;
+      cur.y += (target.y - cur.y) * 0.08;
+      stage.style.setProperty("--px", (cur.x * 100).toFixed(2) + "%");
+      stage.style.setProperty("--py", (cur.y * 100).toFixed(2) + "%");
+      var rs = stage.getBoundingClientRect(), rh = hero.getBoundingClientRect();
+      hero.style.setProperty("--lx", ((rs.left - rh.left + cur.x * rs.width) / rh.width * 100).toFixed(2) + "%");
+      hero.style.setProperty("--ly", ((rs.top - rh.top + cur.y * rs.height) / rh.height * 100).toFixed(2) + "%");
+      if (heroVisible) raf = requestAnimationFrame(frame);
+    }
+    var heroVisible = true;
+    if (reduce) { stage.style.setProperty("--pr", "1400px"); return; }
+    hero.addEventListener("pointermove", function (e) {
+      if (!fine) return;
+      var r = stage.getBoundingClientRect();
+      target.x = clamp((e.clientX - r.left) / r.width, -0.2, 1.2);
+      target.y = clamp((e.clientY - r.top) / r.height, -0.2, 1.2);
+      lastMove = performance.now();
+    });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        heroVisible = es[0].isIntersecting;
+        if (heroVisible && !raf) raf = requestAnimationFrame(frame);
+      }).observe(hero);
+    }
+    raf = requestAnimationFrame(frame);
+  })();
+
+  /* ---- lens: magnify a framed plate under the pointer ---------------- */
+  if (fine) qsa(".lens-plate").forEach(function (fig) {
+    var frame = fig.querySelector(".plate-frame");
+    var img = frame && frame.querySelector("img");
+    if (!img) return;
+    var lens = document.createElement("div");
+    lens.className = "lens"; lens.setAttribute("aria-hidden", "true");
+    lens.style.backgroundImage = "url('" + img.getAttribute("src") + "')";
+    frame.appendChild(lens);
+    var zoom = 2.4, size = 180;
+    frame.addEventListener("pointermove", function (e) {
+      var fr = frame.getBoundingClientRect(), ir = img.getBoundingClientRect();
+      var x = e.clientX - ir.left, y = e.clientY - ir.top;
+      lens.style.left = (e.clientX - fr.left - size / 2) + "px";
+      lens.style.top = (e.clientY - fr.top - size / 2) + "px";
+      lens.style.backgroundSize = (ir.width * zoom) + "px " + (ir.height * zoom) + "px";
+      lens.style.backgroundPosition = (size / 2 - x * zoom) + "px " + (size / 2 - y * zoom) + "px";
+    });
+  });
+
+  /* ---- spotlight cards: glow and lit border follow the pointer ------- */
+  if (fine) qsa(".spot").forEach(function (el) {
+    el.addEventListener("pointermove", function (e) {
+      var r = el.getBoundingClientRect();
+      el.style.setProperty("--x", (e.clientX - r.left) + "px");
+      el.style.setProperty("--y", (e.clientY - r.top) + "px");
+    });
+  });
+
+  /* ---- project cards tilt toward the pointer, with glare ------------- */
+  if (fine && !reduce) qsa(".tilt").forEach(function (card) {
+    var max = card.classList.contains("wide") ? 3 : 6;
+    card.addEventListener("pointermove", function (e) {
+      var r = card.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      card.classList.add("tilting");
+      card.style.setProperty("--ry", ((px - 0.5) * 2 * max).toFixed(2) + "deg");
+      card.style.setProperty("--rx", ((0.5 - py) * 2 * max).toFixed(2) + "deg");
+      card.style.setProperty("--gx", (px * 100).toFixed(1) + "%");
+      card.style.setProperty("--gy", (py * 100).toFixed(1) + "%");
+    });
+    card.addEventListener("pointerleave", function () {
+      card.classList.remove("tilting");
+      card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg");
+    });
+  });
 
   /* ---- staggered groups ---------------------------------------------- */
   (function setupStagger() {
     var groups = qsa("[data-stagger]");
-    if (!groups.length) return;
-
     groups.forEach(function (g) {
       var step = parseInt(g.getAttribute("data-stagger-step") || "70", 10);
-      var offset = parseInt(g.getAttribute("data-stagger-offset") || "0", 10);
-      var kids = Array.prototype.slice.call(g.children);
-      g._kids = kids; g._step = step;
+      g._kids = Array.prototype.slice.call(g.children); g._step = step;
       if (reduce) return;
-      kids.forEach(function (k, i) {
-        k.classList.add("stg");
-        k.style.setProperty("--si", (offset + i) * step);
-      });
+      g._kids.forEach(function (k, i) { k.classList.add("stg"); k.style.setProperty("--si", i * step); });
     });
-
     if (reduce || !("IntersectionObserver" in window)) return;
-
     function go(g) {
       if (g._done) return; g._done = true;
-      var last = 0;
-      g._kids.forEach(function (k, i) {
-        k.classList.add("shown");
-        last = parseFloat(k.style.getPropertyValue("--si")) || (i * g._step);
-      });
-      // clean up so hover/interaction transitions are unencumbered afterwards
+      g._kids.forEach(function (k) { k.classList.add("shown"); });
+      // clean up so hover transitions are not delayed afterwards
       setTimeout(function () {
-        g._kids.forEach(function (k) {
-          k.classList.remove("stg", "shown");
-          k.style.removeProperty("--si");
-        });
-      }, last + 1100);
+        g._kids.forEach(function (k) { k.classList.remove("stg", "shown"); k.style.removeProperty("--si"); });
+      }, g._kids.length * g._step + 1100);
     }
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { go(e.target); io.unobserve(e.target); } });
-    }, { threshold: 0.01, rootMargin: "0px 0px -8% 0px" });
-
-    var vh = window.innerHeight || 800;
-    groups.forEach(function (g) {
-      if (g.getBoundingClientRect().top < vh * 0.95) go(g);
-      else io.observe(g);
-    });
-    setTimeout(function () { groups.forEach(go); }, 3200);
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { go(e.target); io.unobserve(e.target); } });
+    }, { threshold: 0.05, rootMargin: "0px 0px -8% 0px" });
+    groups.forEach(function (g) { io.observe(g); });
   })();
 
-  /* ---- reveal on scroll (section heads, intros, etc.) ---------------- */
+  /* ---- reveal on scroll ---------------------------------------------- */
   var reveals = qsa(".reveal");
-  function show(el) { el.classList.add("in"); }
-  if (reduce || !("IntersectionObserver" in window)) {
-    reveals.forEach(show);
-  } else {
-    var rio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { show(e.target); rio.unobserve(e.target); } });
-    }, { threshold: 0.01, rootMargin: "0px 0px -6% 0px" });
-    var vh2 = window.innerHeight || 800;
-    reveals.forEach(function (el) {
-      if (el.getBoundingClientRect().top < vh2 * 0.92) show(el);
-      else rio.observe(el);
-    });
-    setTimeout(function () { reveals.forEach(show); }, 2800);
+  if (reduce || !("IntersectionObserver" in window)) reveals.forEach(function (el) { el.classList.add("in"); });
+  else {
+    var rio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); rio.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
+    reveals.forEach(function (el) { rio.observe(el); });
   }
 
-  /* ---- draw-in: icon strokes and the timeline track ------------------ */
+  /* ---- draw-in: icon strokes ----------------------------------------- */
   qsa(".draw svg > *").forEach(function (el) { el.setAttribute("pathLength", "1"); });
-  var drawGroups = qsa(".draw, .tl");
-  if (reduce || !("IntersectionObserver" in window)) {
-    drawGroups.forEach(function (g) { g.classList.add("drawn"); });
-  } else {
-    var dio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("drawn"); dio.unobserve(e.target); } });
+  var drawGroups = qsa(".draw");
+  if (!reduce && "IntersectionObserver" in window) {
+    var dio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("drawn"); dio.unobserve(e.target); } });
     }, { threshold: 0.15 });
-    drawGroups.forEach(function (g) {
-      if (g.classList.contains("draw")) g.classList.add("armed");
-      dio.observe(g);
+    drawGroups.forEach(function (g) { g.classList.add("armed"); dio.observe(g); });
+  }
+
+  /* ---- dock: magnify icons near the pointer -------------------------- */
+  var dock = document.getElementById("dock");
+  var dockLinks = dock ? qsa("a", dock) : [];
+  if (dock && fine && !reduce && window.innerWidth > 640) {
+    dock.addEventListener("pointermove", function (e) {
+      dockLinks.forEach(function (a) {
+        var r = a.getBoundingClientRect();
+        var d = Math.abs(e.clientX - (r.left + r.width / 2));
+        a.style.setProperty("--s", (44 + 22 * Math.max(0, 1 - d / 150)).toFixed(1) + "px");
+      });
+    });
+    dock.addEventListener("pointerleave", function () {
+      dockLinks.forEach(function (a) { a.style.removeProperty("--s"); });
     });
   }
 
-  /* ---- where am I: rail, index and nav follow the current section ---- */
-  var spySections = jumpTo.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+  /* ---- scroll: progress, nav rule, dock, active section, tracing beam  */
+  var sections = jumpTo.map(function (id) { return document.getElementById(id); }).filter(Boolean);
   var spyLinks = qsa("[data-spy]");
-  var rail = document.getElementById("rail");
   var hero = document.getElementById("hero");
-  var nowN = document.getElementById("navNowN");
-  var nowT = document.getElementById("navNowT");
-  var nowBar = document.getElementById("navNowBar");
-  var nowLink = document.getElementById("navNow");
-  var activeId = null, spyQueued = false;
-  function spy() {
-    spyQueued = false;
+  var trace = document.getElementById("trace");
+  var activeId = null, queued = false;
+  function onScroll() {
+    queued = false;
     var y = window.scrollY || docEl.scrollTop;
     var vh = window.innerHeight || 800;
-    var line = y + vh * 0.4;
-    var cur = null;
-    spySections.forEach(function (s) { if (s.offsetTop <= line) cur = s; });
-    // the last section is short: count it as current once the page bottoms out
-    if (y + vh >= docEl.scrollHeight - 4) cur = spySections[spySections.length - 1];
-    var past = hero ? y > hero.offsetTop + hero.offsetHeight - vh * 0.5 : y > vh * 0.5;
-    if (nav) nav.classList.toggle("has-now", !!cur && past);
-    if (rail) rail.classList.toggle("show", past);
-    var id = cur && past ? cur.id : null;
-    if (cur && nowBar) {
-      var p = (line - cur.offsetTop) / Math.max(1, cur.offsetHeight);
-      nowBar.style.transform = "scaleX(" + Math.max(0, Math.min(1, p)).toFixed(3) + ")";
+    var max = docEl.scrollHeight - docEl.clientHeight;
+    if (nav) nav.classList.toggle("scrolled", y > 12);
+    if (prog) prog.style.transform = "scaleX(" + (max > 0 ? clamp(y / max, 0, 1) : 0) + ")";
+    if (dock) dock.classList.toggle("show", y > (hero ? hero.offsetHeight * 0.35 : vh * 0.4));
+
+    var line = y + vh * 0.4, cur = null;
+    sections.forEach(function (s) { if (s.offsetTop <= line) cur = s; });
+    if (y + vh >= docEl.scrollHeight - 4) cur = sections[sections.length - 1];
+    var id = cur ? cur.id : null;
+    if (id !== activeId) {
+      activeId = id;
+      spyLinks.forEach(function (a) { a.classList.toggle("active", a.getAttribute("data-spy") === id); });
     }
-    if (id === activeId) return;
-    activeId = id;
-    spyLinks.forEach(function (a) { a.classList.toggle("active", a.getAttribute("data-spy") === id); });
-    if (cur && nowN && nowT) {
-      nowN.textContent = cur.getAttribute("data-n") || "";
-      nowT.textContent = cur.getAttribute("data-label") || "";
-      if (nowLink) nowLink.setAttribute("href", "#" + cur.id);
+
+    // the beam grows as the timeline passes the middle of the screen
+    if (trace) {
+      var r = trace.getBoundingClientRect();
+      var p = reduce ? 1 : clamp((vh * 0.6 - r.top) / r.height, 0, 1);
+      trace.style.setProperty("--beam", (p * 100).toFixed(1) + "%");
     }
   }
-  function queueSpy() { if (!spyQueued) { spyQueued = true; requestAnimationFrame(spy); } }
-  window.addEventListener("scroll", queueSpy, { passive: true });
-  window.addEventListener("resize", queueSpy, { passive: true });
-  spy();
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(onScroll); } }
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue, { passive: true });
+  onScroll();
 })();

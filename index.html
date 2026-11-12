@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mohamed Sohail Rajab — Machine Learning Engineer</title>
 <meta name="description" content="Mohamed Sohail Rajab — Machine Learning Engineer at Derivco. Applied AI, data science and software. Honours data scientist, cum laude." />
-<meta name="theme-color" content="#ffffff" />
+<meta name="theme-color" content="#1a1817" />
 <link rel="canonical" href="https://mosorr.com/" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://mosorr.com/" />
@@ -25,6 +25,7 @@
   "url": "https://mosorr.com/",
   "jobTitle": "Machine Learning Engineer",
   "worksFor": { "@type": "Organization", "name": "Derivco" },
+  "memberOf": { "@type": "SportsOrganization", "name": "South African National Archery Association" },
   "sameAs": [
     "https://github.com/mosorajab",
     "https://mosorr.substack.com",
@@ -36,34 +37,31 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="art/vitruvian.webp" />
 <!-- Bump ?v= on styles.css and script.js whenever either changes: GitHub Pages serves them under a fixed URL, so browsers that visited before keep showing the old version for a while. -->
-<link rel="stylesheet" href="styles.css?v=20261117" />
+<link rel="stylesheet" href="styles.css?v=20261119" />
 </head>
 <body>
 
 <a class="skip-link" href="#about">Skip to content</a>
 <div class="scroll-progress" id="progress" aria-hidden="true"></div>
 
-<!-- ============================ NAV ============================ -->
-<nav class="nav" id="nav" aria-label="Primary">
+<!-- ============================ TOP BAR ============================ -->
+<header class="nav" id="nav">
   <div class="nav-inner">
     <a class="brand" href="#top" aria-label="Mohamed Sohail Rajab — home">
       <span class="mark" id="navMark" aria-hidden="true"><i></i><i class="a"></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i></i></span>
       <span class="name">M.&nbsp;S.&nbsp;Rajab</span>
     </a>
-    <a class="nav-now" id="navNow" href="#top" aria-live="polite" tabindex="-1">
-      <span class="n" id="navNowN">00</span><span class="t" id="navNowT">Intro</span>
-      <span class="bar" aria-hidden="true"><i id="navNowBar"></i></span>
-    </a>
     <div class="nav-actions">
-      <a class="nav-cta" href="#contact">Get in touch</a>
       <button class="nav-index" id="indexOpen" type="button" aria-controls="index" aria-expanded="false">
         <span class="bars" aria-hidden="true"><i></i><i></i></span><span class="lbl">Index</span>
       </button>
+      <a class="btn btn-primary btn-sm nav-cta" href="#contact">Get in touch</a>
     </div>
   </div>
-</nav>
+</header>
 
 <!-- ============================ INDEX (full-screen menu) ============================ -->
 <div class="index" id="index" role="dialog" aria-modal="true" aria-label="Site index" hidden>
@@ -72,12 +70,12 @@
     <button class="index-close" id="indexClose" type="button" aria-label="Close index">Close <span aria-hidden="true">×</span></button>
   </div>
   <ol class="index-list">
-    <li style="--i:0"><a href="#about" data-spy="about"><span class="ix-n">01</span><span class="ix-name">About</span><span class="ix-sub">Profile</span></a></li>
-    <li style="--i:1"><a href="#work" data-spy="work"><span class="ix-n">02</span><span class="ix-name">Experience</span><span class="ix-sub">2020 → now</span></a></li>
-    <li style="--i:2"><a href="#projects" data-spy="projects"><span class="ix-n">03</span><span class="ix-name">Projects</span><span class="ix-sub">Home lab</span></a></li>
-    <li style="--i:3"><a href="#writing" data-spy="writing"><span class="ix-n">04</span><span class="ix-name">Writing</span><span class="ix-sub">Essays &amp; notes</span></a></li>
-    <li style="--i:4"><a href="#collections" data-spy="collections"><span class="ix-n">05</span><span class="ix-name">Collections</span><span class="ix-sub">Off the clock</span></a></li>
-    <li style="--i:5"><a href="#contact" data-spy="contact"><span class="ix-n">06</span><span class="ix-name">Contact</span><span class="ix-sub">Say hello</span></a></li>
+    <li style="--i:0"><a href="#about" data-spy="about"><span class="ix-n">I</span><span class="ix-name">About</span><span class="ix-sub">Profile</span></a></li>
+    <li style="--i:1"><a href="#work" data-spy="work"><span class="ix-n">II</span><span class="ix-name">Experience</span><span class="ix-sub">2020 → now</span></a></li>
+    <li style="--i:2"><a href="#projects" data-spy="projects"><span class="ix-n">III</span><span class="ix-name">Projects</span><span class="ix-sub">Built by hand</span></a></li>
+    <li style="--i:3"><a href="#writing" data-spy="writing"><span class="ix-n">IV</span><span class="ix-name">Writing</span><span class="ix-sub">Essays &amp; notes</span></a></li>
+    <li style="--i:4"><a href="#collections" data-spy="collections"><span class="ix-n">V</span><span class="ix-name">Off the clock</span><span class="ix-sub">Collections</span></a></li>
+    <li style="--i:5"><a href="#contact" data-spy="contact"><span class="ix-n">VI</span><span class="ix-name">Contact</span><span class="ix-sub">Say hello</span></a></li>
   </ol>
   <div class="index-foot">
     <span class="ix-links">
@@ -90,316 +88,312 @@
   </div>
 </div>
 
-<!-- ============================ SECTION RAIL (desktop) ============================ -->
-<nav class="rail" id="rail" aria-label="Sections">
-  <a href="#about" data-spy="about"><span class="r-label">01 About</span><span class="r-tick" aria-hidden="true"></span></a>
-  <a href="#work" data-spy="work"><span class="r-label">02 Experience</span><span class="r-tick" aria-hidden="true"></span></a>
-  <a href="#projects" data-spy="projects"><span class="r-label">03 Projects</span><span class="r-tick" aria-hidden="true"></span></a>
-  <a href="#writing" data-spy="writing"><span class="r-label">04 Writing</span><span class="r-tick" aria-hidden="true"></span></a>
-  <a href="#collections" data-spy="collections"><span class="r-label">05 Collections</span><span class="r-tick" aria-hidden="true"></span></a>
-  <a href="#contact" data-spy="contact"><span class="r-label">06 Contact</span><span class="r-tick" aria-hidden="true"></span></a>
+<!-- ============================ DOCK (floating section navigation) ============================ -->
+<nav class="dock" id="dock" aria-label="Sections">
+  <a href="#about" data-spy="about"><span class="dock-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span class="dock-tip">I · About</span></a>
+  <a href="#work" data-spy="work"><span class="dock-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg></span><span class="dock-tip">II · Experience</span></a>
+  <a href="#projects" data-spy="projects"><span class="dock-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></span><span class="dock-tip">III · Projects</span></a>
+  <a href="#writing" data-spy="writing"><span class="dock-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19l9-9 3 3-9 9H5v-3z"/><path d="M14 10l2-2 3 3-2 2"/></svg></span><span class="dock-tip">IV · Writing</span></a>
+  <a href="#collections" data-spy="collections"><span class="dock-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/><path d="M9 2h6M9 22h6"/></svg></span><span class="dock-tip">V · Off the clock</span></a>
+  <span class="dock-sep" aria-hidden="true"></span>
+  <a href="#contact" data-spy="contact"><span class="dock-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 7l9 6 9-6"/></svg></span><span class="dock-tip">VI · Contact</span></a>
 </nav>
 
-<main class="shell" id="top">
-
-<template id="__bundler_thumbnail">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <rect width="100" height="100" fill="#f7f3ea"/>
-    <g transform="translate(34,32)">
-      <rect x="0" y="0" width="9" height="9" fill="#33302b"/>
-      <rect x="11.5" y="0" width="9" height="9" fill="#8a2a2a"/>
-      <rect x="23" y="0" width="9" height="9" fill="#33302b"/>
-      <rect x="0" y="11.5" width="9" height="9" fill="#8a2a2a"/>
-      <rect x="11.5" y="11.5" width="9" height="9" fill="#33302b"/>
-      <rect x="23" y="11.5" width="9" height="9" fill="#8a2a2a"/>
-      <rect x="0" y="23" width="9" height="9" fill="#33302b"/>
-      <rect x="11.5" y="23" width="9" height="9" fill="#8a2a2a"/>
-      <rect x="23" y="23" width="9" height="9" fill="#33302b"/>
-    </g>
-    <text x="50" y="78" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#33302b" letter-spacing="1">MSR</text>
-  </svg>
-</template>
+<main id="top">
 
   <!-- ============================ HERO ============================ -->
   <section class="hero" id="hero" data-screen-label="Hero">
-    <div class="hero-bg" data-parallax aria-hidden="true"></div>
-    <canvas class="hero-tiles" id="heroTiles" data-parallax aria-hidden="true" hidden></canvas>
-    <button class="hero-hint mono-label" id="heroHint" data-parallax type="button" disabled hidden>Click the grid to place a tile</button>
-    <div class="hero-eyebrow reveal">
-      <span class="dot" aria-hidden="true"></span>
-      <span class="mono-label">Portfolio — Edition 2026</span>
-      <span class="mono-label eyebrow-field" style="color:var(--ink-3)">/ Machine Learning &amp; Applied AI</span>
-      <span class="hero-mini" aria-hidden="true"><i></i><i class="a"></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i></i></span>
+    <div class="hero-light" aria-hidden="true"></div>
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow reveal"><span class="dot" aria-hidden="true"></span>Portfolio · <span class="roman">MMXXVI</span> <span class="eyebrow-field">/ Machine Learning &amp; Applied AI</span></p>
+        <h1 class="hero-name reveal" data-d="1">Mohamed Sohail Rajab</h1>
+        <h2 class="hero-headline" id="heroHeadline">Machine learning, applied&nbsp;AI, and the software <em>around</em> it.</h2>
+        <p class="hero-sub reveal" data-d="3">
+          I'm a <strong>machine learning &amp; applied-AI engineer</strong> and <strong>software developer</strong>: taking models from research into production and building the systems they live in, <em>with the patience of a collector.</em>
+        </p>
+        <div class="hero-cta reveal" data-d="4">
+          <a class="btn btn-primary" href="#projects">See the work <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+
+      <figure class="hero-plate reveal" data-d="2" id="heroPlate">
+        <div class="plate-stage">
+          <img class="plate-base" src="art/vitruvian.webp" width="1000" height="1405" alt="Leonardo da Vinci's Vitruvian Man: a male figure in two superimposed positions, inscribed in a circle and a square, with mirror-written notes above and below." />
+          <img class="plate-lit" src="art/vitruvian.webp" width="1000" height="1405" alt="" aria-hidden="true" />
+        </div>
+        <figcaption><span class="pl">Pl. I</span> Leonardo da Vinci, <em>Vitruvian Man</em>, c. 1490</figcaption>
+      </figure>
     </div>
 
-    <div class="hero-grid">
-      <h1 class="hero-name reveal">Mohamed Sohail Rajab</h1>
-      <h2 class="hero-headline" id="heroHeadline">
-        Machine learning, applied&nbsp;AI,<br />
-        and the software <em class="ink-accent">around</em> it.
-      </h2>
-      <p class="hero-sub reveal" data-d="2">
-        I'm a <strong>machine learning &amp; applied-AI engineer</strong> and <strong>software developer</strong>: taking models from research into production and building the systems they live in, <span class="accent">with the patience of a collector.</span>
-      </p>
-    </div>
-
-    <nav class="hero-links" aria-label="Profiles" data-stagger data-stagger-offset="6">
+    <div class="shell">
+    <nav class="hero-links" aria-label="Profiles">
       <a class="hl" href="https://github.com/mosorajab" target="_blank" rel="noopener">
-        <span class="hl-n">01</span>
-        <span class="hl-name">GitHub</span>
-        <span class="hl-handle">/mosorajab</span>
-        <span class="hl-arr" aria-hidden="true">↗</span>
+        <span class="hl-n">i</span><span class="hl-name">GitHub</span><span class="hl-handle">/mosorajab</span><span class="hl-arr" aria-hidden="true">↗</span>
       </a>
       <a class="hl" href="https://mosorr.substack.com" target="_blank" rel="noopener">
-        <span class="hl-n">02</span>
-        <span class="hl-name">Substack</span>
-        <span class="hl-handle">mosorr.substack.com</span>
-        <span class="hl-arr" aria-hidden="true">↗</span>
+        <span class="hl-n">ii</span><span class="hl-name">Substack</span><span class="hl-handle">mosorr.substack.com</span><span class="hl-arr" aria-hidden="true">↗</span>
       </a>
       <a class="hl" href="https://medium.com/@mosorr" target="_blank" rel="noopener">
-        <span class="hl-n">03</span>
-        <span class="hl-name">Medium</span>
-        <span class="hl-handle">@mosorr</span>
-        <span class="hl-arr" aria-hidden="true">↗</span>
+        <span class="hl-n">iii</span><span class="hl-name">Medium</span><span class="hl-handle">@mosorr</span><span class="hl-arr" aria-hidden="true">↗</span>
       </a>
       <a class="hl" href="https://www.linkedin.com/in/mohamedsohailrajab/" target="_blank" rel="noopener">
-        <span class="hl-n">04</span>
-        <span class="hl-name">LinkedIn</span>
-        <span class="hl-handle">/mohamedsohailrajab</span>
-        <span class="hl-arr" aria-hidden="true">↗</span>
+        <span class="hl-n">iv</span><span class="hl-name">LinkedIn</span><span class="hl-handle">/mohamedsohailrajab</span><span class="hl-arr" aria-hidden="true">↗</span>
       </a>
     </nav>
+    </div>
   </section>
 
-  <!-- ============================ ABOUT ============================ -->
-  <section class="sec-pad" id="about" data-screen-label="About" data-n="01" data-label="About">
-    <header class="sec-head reveal">
-      <span class="sec-num" aria-hidden="true">01</span>
-      <span class="idx">01 / About</span>
-      <h2 class="sec-title">Profile</h2>
-    </header>
+  <!-- ============================ I · ABOUT ============================ -->
+  <section class="section" id="about" data-screen-label="About" data-n="I" data-label="About">
+    <div class="shell">
+      <header class="sec-head reveal">
+        <span class="numeral" aria-hidden="true">I</span>
+        <div class="sec-titles">
+          <span class="idx">Folio I · About</span>
+          <h2 class="sec-title">Profile</h2>
+        </div>
+      </header>
 
-    <div class="about-grid">
-      <p class="about-statement reveal">
-        I build machine-learning systems the way I appreciate a well-made <em>object</em>: with attention to mechanism, material, and the quiet details most people never notice.
-      </p>
+      <div class="about-grid">
+        <figure class="plate framed lens-plate reveal">
+          <div class="plate-frame"><img src="art/melencolia.webp" width="900" height="1153" loading="lazy" alt="Albrecht Dürer's engraving Melencolia I: a winged figure sits brooding among geometric instruments, a polyhedron, a sphere, an hourglass and a magic square." /></div>
+          <figcaption><span class="pl">Pl. II</span> Albrecht Dürer, <em>Melencolia I</em>, 1514 <span class="cap-note">Hover to look closer</span></figcaption>
+        </figure>
 
-      <div class="about-body reveal" data-d="1">
-        <p>
-          Machine Learning Engineer at <strong>Derivco</strong>, taking models from research into dependable production. Honours in data science (<em>cum laude</em>) on a foundation in application development, so I ship the interface as readily as the model behind it.
-        </p>
-        <ul class="cap-grid draw" data-stagger data-stagger-step="60" aria-label="What I work on">
-          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M8 7h8M7 8.8l4 6.4M17 8.8l-4 6.4"/></svg></span><span class="cap-name">Applied ML</span></li>
-          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5"/><path d="M3 16.5L12 21l9-4.5"/></svg></span><span class="cap-name">Production systems</span></li>
-          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20v-6M10 20V7M15 20v-9M20 20V4M3 21h18"/></svg></span><span class="cap-name">Data science</span></li>
-          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span><span class="cap-name">App development</span></li>
-          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.4-1.2A4.6 4.6 0 0117 18z"/></svg></span><span class="cap-name">Azure AI</span></li>
-          <li class="cap"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><path d="M7 12h12M14 7l5 5-5 5"/></svg></span><span class="cap-name">Research → deployment</span></li>
-        </ul>
+        <div class="about-copy">
+          <p class="about-statement reveal">
+            I build machine-learning systems the way I appreciate a well-made <em>object</em>: with attention to mechanism, material, and the quiet details most people never notice.
+          </p>
+          <p class="about-body reveal" data-d="1">
+            <span class="initial" aria-hidden="true">M</span><span class="sr-only">M</span>achine Learning Engineer at <strong>Derivco</strong>, taking models from research into dependable production. Honours in data science (<em>cum laude</em>) on a foundation in application development, so I ship the interface as readily as the model behind it.
+          </p>
+          <ul class="cap-grid draw" data-stagger data-stagger-step="60" aria-label="What I work on">
+            <li class="cap spot"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M8 7h8M7 8.8l4 6.4M17 8.8l-4 6.4"/></svg></span><span class="cap-name">Applied ML</span></li>
+            <li class="cap spot"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5"/><path d="M3 16.5L12 21l9-4.5"/></svg></span><span class="cap-name">Production systems</span></li>
+            <li class="cap spot"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20v-6M10 20V7M15 20v-9M20 20V4M3 21h18"/></svg></span><span class="cap-name">Data science</span></li>
+            <li class="cap spot"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span><span class="cap-name">App development</span></li>
+            <li class="cap spot"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.4-1.2A4.6 4.6 0 0117 18z"/></svg></span><span class="cap-name">Azure AI</span></li>
+            <li class="cap spot"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><path d="M7 12h12M14 7l5 5-5 5"/></svg></span><span class="cap-name">Research → deployment</span></li>
+          </ul>
+        </div>
       </div>
     </div>
-    <a class="next-link" href="#work"><span>Next</span><span class="nl-name">02 Experience</span><span class="nl-arr" aria-hidden="true">↓</span></a>
+    <div class="fleuron" aria-hidden="true">❦</div>
   </section>
 
-  <!-- ============================ EXPERIENCE / TIMELINE ============================ -->
-  <section class="sec-pad band" id="work" data-screen-label="Work" data-n="02" data-label="Experience">
-    <header class="sec-head reveal">
-      <span class="sec-num" aria-hidden="true">02</span>
-      <span class="idx">02 / Experience</span>
-      <h2 class="sec-title">Work &amp; education</h2>
-    </header>
-
-    <ol class="tl" id="timeline" data-stagger data-stagger-step="110">
-      <li class="tl-item">
-        <span class="tl-yr">2020 — 2022</span>
-        <span class="tl-node" aria-hidden="true"></span>
-        <h3 class="tl-role">BCad, Computer Science</h3>
-        <span class="tl-org">Application Development · Cum Laude</span>
-      </li>
-      <li class="tl-item">
-        <span class="tl-yr">2023</span>
-        <span class="tl-node" aria-hidden="true"></span>
-        <h3 class="tl-role">Honours, Data Analytics</h3>
-        <span class="tl-org">Postgraduate · Cum Laude</span>
-      </li>
-      <li class="tl-item current">
-        <span class="tl-yr">2024 — Now</span>
-        <span class="tl-node" aria-hidden="true"></span>
-        <h3 class="tl-role">Machine Learning Engineer</h3>
-        <span class="tl-org">Derivco</span>
-        <span class="tl-badge">Current</span>
-      </li>
-    </ol>
-    <a class="next-link" href="#projects"><span>Next</span><span class="nl-name">03 Projects</span><span class="nl-arr" aria-hidden="true">↓</span></a>
-  </section>
-
-  <!-- ============================ PROJECTS ============================ -->
-  <section class="sec-pad projects" id="projects" data-screen-label="Projects" data-n="03" data-label="Projects">
-    <header class="sec-head reveal">
-      <span class="sec-num" aria-hidden="true">03</span>
-      <span class="idx">03 / Projects</span>
-      <h2 class="sec-title">Home lab</h2>
-      <p class="sec-sub">Built at home, mostly to <em>learn by doing</em>.</p>
-    </header>
-
-    <div class="proj-grid" data-stagger data-stagger-step="110">
-      <article class="proj-card">
-        <ol class="proj-flow" aria-label="How it works">
-          <li><span class="fn">HDD Library</span><span class="fs">Storage</span></li>
-          <li><span class="fn">Raspberry Pi</span><span class="fs">Media server</span></li>
-          <li><span class="fn">VPN</span><span class="fs">Secure tunnel</span></li>
-          <li><span class="fn">Any Screen</span><span class="fs">Home &amp; away</span></li>
-        </ol>
-        <div class="proj-body">
-          <div class="proj-top">
-            <span class="pid">P-01 — Self-Hosted</span>
-            <span class="proj-status"><span class="led" aria-hidden="true"></span>Running</span>
-          </div>
-          <h3 class="p-title">Home Media Server</h3>
-          <p class="p-desc">My own film library, served from a Raspberry Pi to any screen at home, or anywhere over a VPN.</p>
-          <div class="proj-stack">
-            <span class="chip">Raspberry Pi</span>
-            <span class="chip">Linux</span>
-            <span class="chip">Media Streaming</span>
-            <span class="chip">Self-Hosted</span>
-          </div>
+  <!-- ============================ II · EXPERIENCE ============================ -->
+  <section class="section" id="work" data-screen-label="Work" data-n="II" data-label="Experience">
+    <div class="shell">
+      <header class="sec-head reveal">
+        <span class="numeral" aria-hidden="true">II</span>
+        <div class="sec-titles">
+          <span class="idx">Folio II · Experience</span>
+          <h2 class="sec-title">Work &amp; education</h2>
         </div>
-      </article>
+      </header>
 
-      <article class="proj-card">
-        <ol class="proj-flow" aria-label="How it works">
-          <li><span class="fn">Webcams</span><span class="fs">Capture</span></li>
-          <li><span class="fn">CV Model</span><span class="fs">Detect activity</span></li>
-          <li><span class="fn">LLM</span><span class="fs">Describe event</span></li>
-          <li><span class="fn">Alert</span><span class="fs">Plain language</span></li>
+      <div class="trace" id="trace">
+        <div class="trace-rail" aria-hidden="true"><span class="trace-beam" id="traceBeam"></span></div>
+        <ol class="tl">
+          <li class="tl-item current reveal">
+            <span class="tl-node" aria-hidden="true"></span>
+            <span class="tl-yr">2024 — Now</span>
+            <h3 class="tl-role">Machine Learning Engineer</h3>
+            <span class="tl-org">Derivco</span>
+            <p class="tl-note">Research models into reliable production systems.</p>
+            <span class="tl-badge">Current</span>
+          </li>
+          <li class="tl-item reveal">
+            <span class="tl-node" aria-hidden="true"></span>
+            <span class="tl-yr">2023</span>
+            <h3 class="tl-role">Honours, Data Analytics</h3>
+            <span class="tl-org">Postgraduate · Cum Laude</span>
+            <p class="tl-note">Statistics, machine learning and modelling.</p>
+          </li>
+          <li class="tl-item reveal">
+            <span class="tl-node" aria-hidden="true"></span>
+            <span class="tl-yr">2020 — 2022</span>
+            <h3 class="tl-role">BCad, Computer Science</h3>
+            <span class="tl-org">Application Development · Cum Laude</span>
+            <p class="tl-note">Foundations in building and shipping software.</p>
+          </li>
         </ol>
-        <div class="proj-body">
-          <div class="proj-top">
-            <span class="pid">P-02 — Computer Vision</span>
-            <span class="proj-status"><span class="led" aria-hidden="true"></span>Running</span>
-          </div>
-          <h3 class="p-title">AI Home Surveillance</h3>
-          <p class="p-desc">Old webcams turned into a smart security system: vision flags activity, an LLM describes it.</p>
-          <div class="proj-stack">
-            <span class="chip">Computer Vision</span>
-            <span class="chip">LLM APIs</span>
-            <span class="chip">Python</span>
-            <span class="chip">Real-Time Alerts</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="proj-card wide">
-        <ol class="proj-flow three" aria-label="How it works">
-          <li><span class="fn">Sources</span><span class="fs">The news</span></li>
-          <li><span class="fn">Mosaic News</span><span class="fs">Reader</span></li>
-          <li><span class="fn">You</span><span class="fs">Any browser</span></li>
-        </ol>
-        <div class="proj-body">
-          <div class="proj-top">
-            <span class="pid">P-03 — Web App</span>
-            <span class="proj-status"><span class="led" aria-hidden="true"></span>Live</span>
-          </div>
-          <h3 class="p-title"><a href="https://mosaicnews.co.za" target="_blank" rel="noopener">Mosaic News</a></h3>
-          <p class="p-desc">My personal news reader, built for the way I like to read.</p>
-          <a class="proj-link" href="https://mosaicnews.co.za" target="_blank" rel="noopener">Visit mosaicnews.co.za<span class="v-arr" aria-hidden="true">↗</span></a>
-        </div>
-      </article>
+      </div>
     </div>
-    <a class="next-link" href="#writing"><span>Next</span><span class="nl-name">04 Writing</span><span class="nl-arr" aria-hidden="true">↓</span></a>
+    <div class="fleuron" aria-hidden="true">❦</div>
   </section>
 
-  <!-- ============================ WRITING ============================ -->
-  <section class="sec-pad writing band" id="writing" data-screen-label="Writing" data-n="04" data-label="Writing">
-    <header class="sec-head reveal">
-      <span class="sec-num" aria-hidden="true">04</span>
-      <span class="idx">04 / Writing</span>
-      <h2 class="sec-title">Writing</h2>
-      <p class="sec-sub">On Medium &amp; Substack.</p>
-    </header>
+  <!-- ============================ III · PROJECTS ============================ -->
+  <section class="section" id="projects" data-screen-label="Projects" data-n="III" data-label="Projects">
+    <div class="shell">
+      <header class="sec-head reveal">
+        <span class="numeral" aria-hidden="true">III</span>
+        <div class="sec-titles">
+          <span class="idx">Folio III · Projects</span>
+          <h2 class="sec-title">Built by hand</h2>
+        </div>
+        <figure class="sec-plate plate framed">
+          <div class="plate-frame"><img src="art/solid.webp" width="499" height="426" loading="lazy" alt="Detail of Dürer's Melencolia I: a large truncated polyhedron of stone beside a ladder." /></div>
+          <figcaption><span class="pl">Pl. III</span> Dürer, <em>Melencolia I</em> (detail), 1514</figcaption>
+        </figure>
+      </header>
 
-    <div class="posts">
-      <a class="post-feature reveal" href="https://mosorr.substack.com/p/the-chance-of-winning" target="_blank" rel="noopener">
-        <span class="pf-art" aria-hidden="true"><i></i><i class="a"></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i></i></span>
-        <span class="pf-meta">Latest · Essay · 27 Oct 2026</span>
-        <span class="pf-title">The Chance of Winning</span>
-        <span class="pf-desc">Why a chance to win makes us play.</span>
-        <span class="pf-cta">Read on Substack<span class="arrow" aria-hidden="true">↗</span></span>
+      <div class="proj-grid">
+        <article class="proj-card tilt reveal">
+          <ol class="proj-flow" aria-label="How it works">
+            <li><span class="fn">HDD Library</span><span class="fs">Storage</span></li>
+            <li><span class="fn">Raspberry Pi</span><span class="fs">Media server</span></li>
+            <li><span class="fn">VPN</span><span class="fs">Secure tunnel</span></li>
+            <li><span class="fn">Any Screen</span><span class="fs">Home &amp; away</span></li>
+          </ol>
+          <div class="proj-body">
+            <div class="proj-top">
+              <span class="pid">P · I — Self-Hosted</span>
+              <span class="proj-status"><span class="led" aria-hidden="true"></span>Running</span>
+            </div>
+            <h3 class="p-title">Home Media Server</h3>
+            <p class="p-desc">My own film library, served from a Raspberry Pi to any screen at home, or anywhere over a VPN.</p>
+            <div class="proj-stack">
+              <span class="chip">Raspberry Pi</span><span class="chip">Linux</span><span class="chip">Media Streaming</span><span class="chip">Self-Hosted</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj-card tilt reveal" data-d="1">
+          <ol class="proj-flow" aria-label="How it works">
+            <li><span class="fn">Webcams</span><span class="fs">Capture</span></li>
+            <li><span class="fn">CV Model</span><span class="fs">Detect activity</span></li>
+            <li><span class="fn">LLM</span><span class="fs">Describe event</span></li>
+            <li><span class="fn">Alert</span><span class="fs">Plain language</span></li>
+          </ol>
+          <div class="proj-body">
+            <div class="proj-top">
+              <span class="pid">P · II — Computer Vision</span>
+              <span class="proj-status"><span class="led" aria-hidden="true"></span>Running</span>
+            </div>
+            <h3 class="p-title">AI Home Surveillance</h3>
+            <p class="p-desc">Old webcams turned into a smart security system: vision flags activity, an LLM describes it.</p>
+            <div class="proj-stack">
+              <span class="chip">Computer Vision</span><span class="chip">LLM APIs</span><span class="chip">Python</span><span class="chip">Real-Time Alerts</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj-card wide tilt reveal">
+          <ol class="proj-flow three" aria-label="How it works">
+            <li><span class="fn">Sources</span><span class="fs">The news</span></li>
+            <li><span class="fn">Mosaic News</span><span class="fs">Reader</span></li>
+            <li><span class="fn">You</span><span class="fs">Any browser</span></li>
+          </ol>
+          <div class="proj-body">
+            <div class="proj-top">
+              <span class="pid">P · III — Web App</span>
+              <span class="proj-status"><span class="led" aria-hidden="true"></span>Live</span>
+            </div>
+            <h3 class="p-title"><a href="https://mosaicnews.co.za" target="_blank" rel="noopener">Mosaic News</a></h3>
+            <p class="p-desc">My personal news reader, built for the way I like to read.</p>
+            <a class="text-link" href="https://mosaicnews.co.za" target="_blank" rel="noopener">Visit mosaicnews.co.za<span class="v-arr" aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="fleuron" aria-hidden="true">❦</div>
+  </section>
+
+  <!-- ============================ IV · WRITING ============================ -->
+  <section class="section" id="writing" data-screen-label="Writing" data-n="IV" data-label="Writing">
+    <div class="shell">
+      <header class="sec-head reveal">
+        <span class="numeral" aria-hidden="true">IV</span>
+        <div class="sec-titles">
+          <span class="idx">Folio IV · Writing</span>
+          <h2 class="sec-title">Essays &amp; notes</h2>
+        </div>
+        <p class="sec-sub">On Medium &amp; Substack.</p>
+      </header>
+
+      <a class="feature reveal" href="https://mosorr.substack.com/p/the-chance-of-winning" target="_blank" rel="noopener">
+        <figure class="plate framed">
+          <div class="plate-frame"><img src="art/jerome.webp" width="900" height="1175" loading="lazy" alt="Albrecht Dürer's engraving Saint Jerome in His Study: a scholar writes at a desk in a sunlit room, a lion and a dog asleep in the foreground." /></div>
+          <figcaption><span class="pl">Pl. IV</span> Albrecht Dürer, <em>Saint Jerome in His Study</em>, 1514</figcaption>
+        </figure>
+        <div class="feature-copy">
+          <span class="f-meta">Latest essay · 27 Oct 2026</span>
+          <span class="f-title">The Chance of Winning</span>
+          <span class="f-desc">An analysis of the psyche, and why a chance to win makes us play.</span>
+          <span class="btn btn-primary">Read on Substack <span aria-hidden="true">↗</span></span>
+        </div>
       </a>
 
       <div class="post-list" data-stagger data-stagger-step="80">
         <a class="post" href="https://medium.com/@mosorr/steel-and-stories-the-charm-of-the-higonokami-3f3b955876e0" target="_blank" rel="noopener">
-          <span class="p-meta">03 Sep 2024 · Craft</span>
-          <span class="p-t">Steel and Stories: The Charm of the Higonokami</span>
-          <span class="arrow" aria-hidden="true">↗</span>
+          <span class="p-date">03 Sep 2024</span><span class="p-t">Steel and Stories: The Charm of the Higonokami</span><span class="p-cat">Craft</span><span class="arrow" aria-hidden="true">↗</span>
         </a>
         <a class="post" href="https://medium.com/@mosorr/ai-900-azure-ai-fundamentals-all-you-nee-063d5850b730" target="_blank" rel="noopener">
-          <span class="p-meta">20 Aug 2024 · Machine Learning</span>
-          <span class="p-t">AI-900: Azure AI Fundamentals — All You Need</span>
-          <span class="arrow" aria-hidden="true">↗</span>
+          <span class="p-date">20 Aug 2024</span><span class="p-t">AI-900: Azure AI Fundamentals — All You Need</span><span class="p-cat">Machine Learning</span><span class="arrow" aria-hidden="true">↗</span>
         </a>
         <a class="post" href="https://medium.com/@mosorr/the-timeless-allure-of-fountain-pens-why-theyre-more-than-just-writing-instruments-bcdf04050205" target="_blank" rel="noopener">
-          <span class="p-meta">20 Aug 2024 · Craft</span>
-          <span class="p-t">The Timeless Allure of Fountain Pens</span>
-          <span class="arrow" aria-hidden="true">↗</span>
+          <span class="p-date">20 Aug 2024</span><span class="p-t">The Timeless Allure of Fountain Pens</span><span class="p-cat">Craft</span><span class="arrow" aria-hidden="true">↗</span>
         </a>
       </div>
     </div>
-    <a class="next-link" href="#collections"><span>Next</span><span class="nl-name">05 Collections</span><span class="nl-arr" aria-hidden="true">↓</span></a>
+    <div class="fleuron" aria-hidden="true">❦</div>
   </section>
 
-  <!-- ============================ COLLECTIONS ============================ -->
-  <section class="sec-pad collections" id="collections" data-screen-label="Collections" data-n="05" data-label="Collections">
-    <header class="sec-head reveal">
-      <span class="sec-num" aria-hidden="true">05</span>
-      <span class="idx">05 / Collections</span>
-      <h2 class="sec-title">Off the clock</h2>
-      <p class="sec-sub">The same eye for <em>mechanism and material</em>.</p>
-    </header>
+  <!-- ============================ V · OFF THE CLOCK ============================ -->
+  <section class="section" id="collections" data-screen-label="Collections" data-n="V" data-label="Off the clock">
+    <div class="shell">
+      <header class="sec-head reveal">
+        <span class="numeral" aria-hidden="true">V</span>
+        <div class="sec-titles">
+          <span class="idx">Folio V · Collections</span>
+          <h2 class="sec-title">Off the clock</h2>
+        </div>
+        <p class="sec-sub">The same eye for <em>mechanism and material</em>.</p>
+      </header>
 
-    <ul class="coll-grid draw" data-stagger data-stagger-step="80">
-      <li class="coll-cell"><span class="num">01</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19l9-9 3 3-9 9H5v-3z"/><path d="M14 10l2-2 3 3-2 2"/></svg></span><span class="c-name">Fountain Pens</span></li>
-      <li class="coll-cell"><span class="num">02</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/><path d="M9 2h6M9 22h6"/></svg></span><span class="c-name">Horology</span></li>
-      <li class="coll-cell"><span class="num">03</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9h18M3 15h18M8 5v14M16 5v14"/></svg></span><span class="c-name">Film</span></li>
-      <li class="coll-cell"><span class="num">04</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 3h4l-1 4h-2l-1-4z"/><path d="M9 7h6v3a3 3 0 01-1 2l-1 8h-2l-1-8a3 3 0 01-1-2V7z"/></svg></span><span class="c-name">Fragrance</span></li>
-      <li class="coll-cell"><span class="num">05</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h6v16H6a2 2 0 00-2 2V5z"/><path d="M20 5a2 2 0 00-2-2h-6v16h6a2 2 0 012 2V5z"/></svg></span><span class="c-name">Books</span></li>
-      <li class="coll-cell"><span class="num">06</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3q9 9 0 18"/><path d="M7 3v18"/><path d="M3 12h18"/><path d="M18 9l3 3-3 3"/><path d="M3 12l-1-2M3 12l-1 2"/></svg></span><span class="c-name">Archery<span class="c-note">Member, <abbr title="South African National Archery Association">SANAA</abbr></span></span></li>
-    </ul>
-    <a class="next-link" href="#contact"><span>Next</span><span class="nl-name">06 Contact</span><span class="nl-arr" aria-hidden="true">↓</span></a>
+      <ul class="coll-grid draw" data-stagger data-stagger-step="70">
+        <li class="coll-cell spot"><span class="num">i</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19l9-9 3 3-9 9H5v-3z"/><path d="M14 10l2-2 3 3-2 2"/></svg></span><span class="c-name">Fountain Pens</span></li>
+        <li class="coll-cell spot"><span class="num">ii</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/><path d="M9 2h6M9 22h6"/></svg></span><span class="c-name">Horology</span></li>
+        <li class="coll-cell spot"><span class="num">iii</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9h18M3 15h18M8 5v14M16 5v14"/></svg></span><span class="c-name">Film</span></li>
+        <li class="coll-cell spot"><span class="num">iv</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 3h4l-1 4h-2l-1-4z"/><path d="M9 7h6v3a3 3 0 01-1 2l-1 8h-2l-1-8a3 3 0 01-1-2V7z"/></svg></span><span class="c-name">Fragrance</span></li>
+        <li class="coll-cell spot"><span class="num">v</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h6v16H6a2 2 0 00-2 2V5z"/><path d="M20 5a2 2 0 00-2-2h-6v16h6a2 2 0 012 2V5z"/></svg></span><span class="c-name">Books</span></li>
+        <li class="coll-cell spot"><span class="num">vi</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3q9 9 0 18"/><path d="M7 3v18"/><path d="M3 12h18"/><path d="M18 9l3 3-3 3"/><path d="M3 12l-1-2M3 12l-1 2"/></svg></span><span class="c-name">Archery<span class="c-note">Member, <abbr title="South African National Archery Association">SANAA</abbr></span></span></li>
+      </ul>
+    </div>
   </section>
 
-  <!-- ============================ CONTACT ============================ -->
-  <section class="sec-pad contact band band-ox" id="contact" data-screen-label="Contact" data-n="06" data-label="Contact">
-    <header class="sec-head reveal">
-      <span class="sec-num" aria-hidden="true">06</span>
-      <span class="idx">06 / Contact</span>
-      <h2 class="sec-title">Let's make something <em>considered.</em></h2>
-      <p class="sec-sub">Open to good work.</p>
-    </header>
+  <!-- ============================ VI · CONTACT ============================ -->
+  <section class="section contact" id="contact" data-screen-label="Contact" data-n="VI" data-label="Contact">
+    <div class="shell">
+      <header class="sec-head reveal">
+        <span class="numeral" aria-hidden="true">VI</span>
+        <div class="sec-titles">
+          <span class="idx">Folio VI · Contact</span>
+          <h2 class="sec-title">Let's make something <em>considered.</em></h2>
+        </div>
+      </header>
 
-    <div class="contact-grid">
-      <div class="contact-links" data-stagger data-stagger-step="75">
-        <a href="mailto:mohamedsrajab@gmail.com">
-          <span class="n">01</span><span>Email — mohamedsrajab@gmail.com</span><span class="h">↗</span>
-        </a>
-        <a href="https://github.com/mosorajab" target="_blank" rel="noopener">
-          <span class="n">02</span><span>GitHub — /mosorajab</span><span class="h">↗</span>
-        </a>
-        <a href="https://mosorr.substack.com" target="_blank" rel="noopener">
-          <span class="n">03</span><span>Substack — mosorr.substack.com</span><span class="h">↗</span>
-        </a>
-        <a href="https://medium.com/@mosorr" target="_blank" rel="noopener">
-          <span class="n">04</span><span>Medium — @mosorr</span><span class="h">↗</span>
-        </a>
-        <a href="https://www.linkedin.com/in/mohamedsohailrajab/" target="_blank" rel="noopener">
-          <span class="n">05</span><span>LinkedIn — /mohamedsohailrajab</span><span class="h">↗</span>
-        </a>
+      <div class="contact-grid">
+        <div class="contact-lead reveal">
+          <p>Open to good work: thoughtful machine-learning problems, production systems, and the occasional conversation about pens or watches.</p>
+          <a class="btn btn-border" href="mailto:mohamedsrajab@gmail.com"><span>Write to me</span> <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="contact-links" data-stagger data-stagger-step="75">
+          <a href="mailto:mohamedsrajab@gmail.com"><span class="n">i</span><span>Email — mohamedsrajab@gmail.com</span><span class="h">↗</span></a>
+          <a href="https://github.com/mosorajab" target="_blank" rel="noopener"><span class="n">ii</span><span>GitHub — /mosorajab</span><span class="h">↗</span></a>
+          <a href="https://mosorr.substack.com" target="_blank" rel="noopener"><span class="n">iii</span><span>Substack — mosorr.substack.com</span><span class="h">↗</span></a>
+          <a href="https://medium.com/@mosorr" target="_blank" rel="noopener"><span class="n">iv</span><span>Medium — @mosorr</span><span class="h">↗</span></a>
+          <a href="https://www.linkedin.com/in/mohamedsohailrajab/" target="_blank" rel="noopener"><span class="n">v</span><span>LinkedIn — /mohamedsohailrajab</span><span class="h">↗</span></a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ============================ FOOTER ============================ -->
-  <footer class="colophon">
+  <footer class="shell colophon">
     <div class="col">
       <span class="lab">Mohamed Sohail Rajab</span>
       Machine Learning Engineer @ Derivco<br />
@@ -413,14 +407,18 @@
       <span class="lab">Navigate</span>
       <span class="kbd-tip">Press <kbd>1</kbd>–<kbd>6</kbd> to jump · <kbd>I</kbd> for the index</span>
     </div>
+    <div class="col plates-col">
+      <span class="lab">Plates</span>
+      Leonardo da Vinci, <em>Vitruvian Man</em>; Albrecht Dürer, <em>Melencolia I</em> and <em>Saint Jerome in His Study</em> (National Gallery of Art). Public domain, via Wikimedia Commons.
+    </div>
     <div class="col">
-      <span class="lab">© 2026</span>
-      Set in Spectral &amp; IBM&nbsp;Plex&nbsp;Mono.
+      <span class="lab">© MMXXVI</span>
+      Set in Cormorant, EB&nbsp;Garamond &amp; IBM&nbsp;Plex&nbsp;Mono.
     </div>
   </footer>
 
 </main>
 
-<script src="script.js?v=20261117"></script>
+<script src="script.js?v=20261119"></script>
 </body>
 </html>
