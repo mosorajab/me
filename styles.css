@@ -578,6 +578,22 @@ body.no-motion .tl::before, body.no-motion .tl::after { transform: none; transit
   color: var(--ink-2); border: 1px solid var(--hair-2); background: var(--paper-2);
   padding: 5px 8px; border-radius: 2px; white-space: nowrap;
 }
+/* a project with a live site: link in the card, and a full-width layout */
+.proj-card .p-title a { color: inherit; }
+.proj-link {
+  display: inline-flex; align-items: center; gap: 10px; align-self: flex-start;
+  margin-top: auto; padding-top: 20px; padding-bottom: 4px; border-bottom: 1px solid var(--hair);
+  font-family: var(--mono); font-size: var(--label); letter-spacing: var(--ls-label); text-transform: uppercase;
+  transition: color .25s ease, border-color .25s ease;
+}
+.proj-link .v-arr { color: var(--accent); transition: transform .3s var(--ease-out, ease); }
+.proj-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.proj-link:hover .v-arr { transform: translate(3px, -3px); }
+.proj-card.wide { grid-column: 1 / -1; }
+@media (min-width: 900px) {
+  .proj-card.wide { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .proj-card.wide .proj-flow { border-bottom: 0; border-right: 1px solid var(--hair); align-content: center; }
+}
 @media (max-width: 760px) { .proj-grid { grid-template-columns: 1fr; } }
 
 /* =========================================================================
@@ -891,9 +907,10 @@ body.no-motion .hero-hint { animation: none; opacity: 1; }
 .proj-card:hover .proj-flow li { border-color: var(--ink-3); }
 .proj-card:hover .proj-flow li:last-child { border-color: var(--accent); }
 .proj-card:hover .proj-flow li:not(:last-child)::after { background: var(--accent); }
+.proj-flow.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 @container (max-width: 520px) {
-  .proj-flow { grid-template-columns: 1fr; gap: 18px; padding: 24px 22px; }
+  .proj-flow, .proj-flow.three { grid-template-columns: 1fr; gap: 18px; padding: 24px 22px; }
   .proj-flow li { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 12px; }
   .proj-flow li:not(:last-child)::after { left: 22px; top: 100%; width: 1px; height: 18px; }
   .proj-flow li:not(:last-child)::before { left: 20px; top: 100%; animation-name: flowY; }
