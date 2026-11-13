@@ -127,35 +127,99 @@
     });
   });
 
-  /* ---- off the clock: the dial shows the pastime you point at ------- */
+  /* ---- off the clock: a dial with a plate for each interest ---------- */
   (function cabinet() {
     var cab = document.getElementById("cabinet");
     if (!cab) return;
-    var items = qsa(".cab-item", cab), arts = qsa(".cab-art", cab);
-    var ring = cab.querySelector(".cab-ring"), count = document.getElementById("cabCount");
-    qsa(".cab-ico svg > *", cab).forEach(function (el) { el.setAttribute("pathLength", "1"); });
-    var cur = 0, lastTouch = 0, inView = false;
-    function show(i) {
-      if (i === cur) return;
-      cur = i;
-      items.forEach(function (b, k) { b.classList.toggle("on", k === i); b.setAttribute("aria-pressed", k === i ? "true" : "false"); });
-      arts.forEach(function (a, k) { a.classList.toggle("on", k === i); });
-      if (ring) ring.style.transform = "rotate(" + (i * 360 / items.length).toFixed(1) + "deg)";
-      if (count) count.textContent = (i + 1) + " / " + items.length;
+    var items = qsa(".cab-item", cab), plates = qsa(".cab-plate", cab), marks = qsa(".cab-dial .mk", cab);
+    var stage = cab.querySelector(".cab-stage"), lens = cab.querySelector(".cab-lens");
+    var hand = cab.querySelector(".cab-dial .hand"), arc = cab.querySelector(".cab-dial .arc");
+    var count = document.getElementById("cabCount"), cap = document.getElementById("cabCap");
+    var list = cab.querySelector(".cab-list"), bar = cab.querySelector(".cab-mark");
+    var n = items.length, step = 360 / n, cur = 0, turn = 0, inView = false, pointerIn = false;
+
+    // load every plate once the section is near, then show the first
+    var loaded = false;
+    function loadPlates() {
+      if (loaded) return; loaded = true;
+      plates.forEach(function (pl) {
+        var src = pl.getAttribute("data-src"), img = new Image();
+        img.decoding = "async";
+        img.onload = function () {
+          var done = function () {
+            pl.style.webkitMaskImage = pl.style.maskImage = "url('" + src + "')";
+            requestAnimationFrame(function () { pl.classList.add("ready"); });
+          };
+          if (img.decode) img.decode().then(done, done); else done();
+        };
+        img.src = src;
+      });
     }
+
+    function placeBar() {
+      if (!bar || !list) return;
+      var b = items[cur];
+      bar.style.height = b.offsetHeight * 0.6 + "px";
+      bar.style.transform = "translateY(" + (b.parentNode.offsetTop + b.offsetHeight * 0.2) + "px)";
+    }
+    function restartArc(dwell) {
+      if (!arc || reduce) return;
+      cab.style.setProperty("--dwell", dwell + "s");
+      cab.classList.remove("run");
+      void arc.getBoundingClientRect();     // restart the CSS animation
+      cab.classList.add("run");
+    }
+    function show(i, byHand) {
+      if (i !== cur) {
+        var prev = cur; cur = i;
+        // always turn forwards, like a clock
+        var delta = ((i - prev) % n + n) % n;
+        turn += delta * step;
+        items.forEach(function (b, k) { b.classList.toggle("on", k === i); b.setAttribute("aria-pressed", k === i ? "true" : "false"); });
+        marks.forEach(function (m, k) { m.classList.toggle("on", k === i); });
+        plates.forEach(function (pl, k) { pl.classList.toggle("on", k === i); pl.classList.toggle("off", k === prev); });
+        if (hand) hand.style.transform = "rotate(" + turn + "deg)";
+        if (arc) arc.style.transform = "rotate(" + (turn - 90) + "deg)";
+        if (count) count.innerHTML = "<b>" + (i + 1) + "</b> / " + n;
+        if (cap) {
+          cap.classList.add("swap");
+          setTimeout(function () { cap.innerHTML = plates[i].getAttribute("data-cap") || ""; cap.classList.remove("swap"); }, 260);
+        }
+        placeBar();
+      }
+      restartArc(byHand ? 9 : 5.2);
+    }
+
     items.forEach(function (b, k) {
-      var pick = function () { lastTouch = Date.now(); show(k); };
-      b.addEventListener("click", pick);
-      b.addEventListener("focus", pick);
-      if (fine) b.addEventListener("pointerenter", pick);
+      b.addEventListener("click", function () { show(k, true); });
+      b.addEventListener("focus", function () { show(k, true); });
+      if (fine) b.addEventListener("pointerenter", function () { show(k, true); });
     });
-    // while it is on screen and nobody is choosing, turn slowly through them
-    if (!reduce) {
-      if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }).observe(cab);
-      setInterval(function () {
-        if (inView && Date.now() - lastTouch > 9000) show((cur + 1) % items.length);
-      }, 3800);
+    if (stage) stage.addEventListener("click", function () { show((cur + 1) % n, true); });
+    // the arc reaching the next marker moves the hand on
+    if (arc) arc.addEventListener("animationend", function () { show((cur + 1) % n, false); });
+
+    // hold while the pointer is over the cabinet or it is off screen
+    function hold() { cab.classList.toggle("hold", pointerIn || !inView); }
+    if (fine) {
+      cab.addEventListener("pointerenter", function () { pointerIn = true; hold(); });
+      cab.addEventListener("pointerleave", function () { pointerIn = false; hold(); });
+      if (lens && stage) stage.addEventListener("pointermove", function (e) {
+        var r = lens.getBoundingClientRect();
+        lens.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100).toFixed(1) + "%");
+        lens.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
+      });
     }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) { if (es[0].isIntersecting) loadPlates(); }, { rootMargin: "0px 0px 200% 0px" }).observe(cab);
+      new IntersectionObserver(function (es) { inView = es[0].isIntersecting; hold(); }, { threshold: 0.25 }).observe(cab);
+    } else { loadPlates(); inView = true; }
+
+    if (cap) cap.innerHTML = plates[0] ? plates[0].getAttribute("data-cap") || "" : "";
+    placeBar();
+    window.addEventListener("resize", placeBar, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeBar);
+    restartArc(5.2);
   })();
 
   /* ---- images: load and decode ahead of the scroll ------------------- */

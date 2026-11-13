@@ -348,35 +348,87 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 12px - var(--sec-gap)); }
 }
 
 /* =========================================================================
-   04 · OFF THE CLOCK — a dial shows the pastime you point at
+   04 · OFF THE CLOCK — a dial: a public-domain plate for each interest sits
+   in the lens; the hand ticks on as the arc reaches the next marker
    ========================================================================= */
-.cabinet { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 100px); align-items: center; }
-.cab-stage { position: relative; aspect-ratio: 1; width: 100%; max-width: 420px; justify-self: center; }
-.cab-stage::before { content: ""; position: absolute; inset: 12%; border-radius: 50%; background: radial-gradient(circle, var(--glow), transparent 70%); }
-.cab-dial, .cab-ring { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; }
-.cab-dial { stroke: var(--hair); stroke-width: .6; }
-.cab-dial .ticks { stroke: var(--ink-3); stroke-width: .5; }
-.cab-ring { stroke: var(--accent); stroke-opacity: .55; stroke-width: .6; stroke-dasharray: 2 4; animation: dialTurn 60s linear infinite; transition: transform 1s var(--ease-out); }
-.cab-ring .bead { fill: var(--accent); stroke: none; }
+.cabinet { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 6vw, 100px); align-items: center; }
+.cab-figure { margin: 0; width: 100%; max-width: 440px; justify-self: center; }
+.cab-stage { position: relative; aspect-ratio: 1; width: 100%; cursor: pointer; -webkit-user-select: none; user-select: none; }
+.cab-stage::before { content: ""; position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, var(--glow), transparent 70%); }
+.cab-dial { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; }
+.cab-dial .bezel { stroke: var(--hair); stroke-width: .6; }
+.cab-dial .ticks { stroke: var(--ink-3); stroke-width: .45; }
+.cab-dial .mk { fill: var(--bg); stroke: var(--ink-3); stroke-width: .6; transform-box: fill-box; transform-origin: center; transition: fill .5s ease, stroke .5s ease, transform .6s var(--ease-out); }
+.cab-dial .mk.on { fill: var(--accent); stroke: var(--accent); transform: scale(1.5); }
+/* the arc fills from the current marker towards the next while the dial waits */
+.cab-dial .arc { stroke: var(--accent); stroke-width: 1.3; stroke-linecap: round; stroke-dasharray: 0 566; transform-origin: 100px 100px; transform: rotate(-90deg); transition: transform 1s var(--ease-out); }
+.cabinet.run .cab-dial .arc { animation: cabArc var(--dwell, 5.2s) linear forwards; }
+.cabinet.hold .cab-dial .arc { animation-play-state: paused; }
+@keyframes cabArc { to { stroke-dasharray: 80.8 566; } }
+.cab-dial .spin { stroke: var(--accent); stroke-opacity: .45; stroke-width: .5; stroke-dasharray: 1.5 3.5; transform-origin: 100px 100px; animation: dialTurn 80s linear infinite; }
 @keyframes dialTurn { to { rotate: 360deg; } }
-.cab-art { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transform: scale(.88); filter: blur(6px); transition: opacity .7s var(--ease-out), transform .9s var(--ease-out), filter .7s var(--ease-out); }
-.cab-art.on { opacity: 1; transform: none; filter: none; }
-.cab-ico { width: 34%; height: 34%; color: var(--ink); }
-.cab-ico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: .9; stroke-linecap: round; stroke-linejoin: round; }
-.cab-art.on .cab-ico svg > * { stroke-dasharray: 1; stroke-dashoffset: 1; animation: cabDraw 1.4s var(--ease-out) forwards; }
-@keyframes cabDraw { to { stroke-dashoffset: 0; } }
-.cab-count { position: absolute; left: 50%; bottom: 27%; transform: translateX(-50%); font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); }
+/* the hand: a needle swung to the active marker with a slight overshoot, like a watch hand */
+.cab-dial .hand { transform-origin: 100px 100px; transition: transform 1s cubic-bezier(.3, 1.45, .45, 1); }
+.cab-dial .hand .tip { stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; }
+
+/* the lens: a small printed sheet, the same in both themes, like the framed plates
+   elsewhere on the page. Each plate is the engraving's ink used as a mask. */
+.cab-lens {
+  position: absolute; inset: 15%; border-radius: 50%; overflow: hidden; isolation: isolate;
+  background: radial-gradient(circle at 50% 36%, var(--lens-hi), var(--lens-lo) 100%);
+  box-shadow: 0 0 0 1px var(--hair), 0 0 0 6px var(--bg), 0 0 0 7px var(--hair), 0 18px 40px -18px oklch(0 0 0 / 0.6);
+  --lens-hi: oklch(0.975 0.008 85); --lens-lo: oklch(0.9 0.014 80); --plate-ink: oklch(0.25 0.02 35);
+  --mx: 50%; --my: 30%;
+}
+:root[data-theme="dark"] .cab-lens { --lens-hi: oklch(0.9 0.011 85); --lens-lo: oklch(0.78 0.016 75); --plate-ink: oklch(0.22 0.02 35); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) .cab-lens { --lens-hi: oklch(0.9 0.011 85); --lens-lo: oklch(0.78 0.016 75); --plate-ink: oklch(0.22 0.02 35); } }
+/* a soft light that follows the pointer, and a little depth at the rim */
+.cab-lens::after {
+  content: ""; position: absolute; inset: 0; z-index: 3; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at var(--mx) var(--my), oklch(1 0 0 / 0.16), transparent 44%);
+  box-shadow: inset 0 0 26px oklch(0.3 0.03 40 / 0.35);
+}
+.cab-plate {
+  position: absolute; inset: 4%; background: var(--plate-ink); opacity: 0; visibility: hidden;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-position: center; mask-position: center;
+  clip-path: circle(0% at 50% 50%); transform: rotate(-10deg) scale(1.1);
+}
+.cab-plate.ready.on {
+  visibility: visible; opacity: 1; z-index: 2; clip-path: circle(75% at 50% 50%); transform: none;
+  transition: clip-path 1.15s var(--ease-io), transform 1.5s var(--ease-out), opacity .2s ease;
+  animation: plateDrift 11s ease-in-out .9s infinite alternate;
+}
+.cab-plate.ready.off {
+  visibility: visible; opacity: 0; z-index: 1; clip-path: circle(75% at 50% 50%); transform: rotate(8deg) scale(.92);
+  transition: opacity .8s ease, transform 1s var(--ease-out), visibility 0s linear 1s;
+}
+@keyframes plateDrift { from { scale: 1; } to { scale: 1.07; } }
+/* without script, the first plate simply shows */
+html:not(.js) .cab-plate.on { visibility: visible; opacity: 1; clip-path: none; transform: none; -webkit-mask-image: url(art/ott/film.webp); mask-image: url(art/ott/film.webp); }
+html:not(.js) .cab-dial .arc { display: none; }
+
+.cab-count { position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); padding: 2px 10px; border-radius: 999px; background: var(--bg); font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+.cab-count b { font-weight: 500; color: var(--accent); }
+.cab-cap { min-height: 2.8em; margin-top: 22px; text-align: center; font-size: 12.5px; line-height: 1.45; color: var(--ink-3); transition: opacity .35s ease; }
+.cab-cap em { font-family: var(--display); font-size: 14px; color: var(--ink-2); }
+.cab-cap.swap { opacity: 0; }
+
+/* the list, with one marker that slides to the active interest */
+.cab-index { position: relative; }
 .cab-list { list-style: none; margin: 0; padding: 0; }
-.cab-item { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: clamp(8px, 1.4vh, 13px) 0; background: none; border: 0; color: inherit; text-align: left; cursor: pointer; font: inherit; transition: padding-left .45s var(--ease-out); }
+.cab-mark { position: absolute; left: 0; top: 0; width: 2px; height: 0; border-radius: 2px; background: var(--accent); transition: transform .55s var(--ease-out), height .55s var(--ease-out); }
+.cab-item { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: clamp(8px, 1.4vh, 13px) 0; background: none; border: 0; color: inherit; text-align: left; cursor: pointer; font: inherit; transition: padding-left .55s var(--ease-out); }
 .cab-name { font-family: var(--display); font-size: clamp(1.8rem, 3.1vw, 2.7rem); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink-3); transition: color .4s ease; }
 .cab-note { justify-self: end; text-align: right; white-space: nowrap; font-size: 13.5px; color: var(--ink-2); opacity: 0; transform: translateX(-8px); transition: opacity .4s ease, transform .5s var(--ease-out); }
 .cab-note abbr { text-decoration: none; cursor: help; border-bottom: 1px dotted var(--ink-3); }
 .cab-item:hover .cab-name { color: var(--ink); }
-.cab-item.on { padding-left: 16px; }
+.cab-item.on { padding-left: 18px; }
 .cab-item.on .cab-name { font-style: italic; color: var(--accent-soft); }
 .cab-item.on .cab-note { opacity: 1; transform: none; }
 @media (max-width: 860px) {
-  .cabinet { grid-template-columns: 1fr; } .cab-stage { max-width: 250px; }
+  .cabinet { grid-template-columns: 1fr; } .cab-figure { max-width: 300px; }
   .cab-item { grid-template-columns: 1fr; row-gap: 0; }
   .cab-note { justify-self: start; text-align: left; white-space: normal; opacity: 1; transform: none; }
   .cab-item:not(.on) .cab-note { display: none; }
@@ -449,8 +501,9 @@ kbd { font-family: var(--mono); font-size: 11px; color: var(--ink-2); background
   .js .reveal:not(.in), .js .stg:not(.shown) { opacity: 1; transform: none; will-change: auto; }
   .reveal, .stg { transition: none; }
   .hero-headline .word > span { opacity: 1; transform: none; filter: none; transition: none; }
-  .btn-border::before, .eyebrow .dot, .status .led, .cab-ring { animation: none; }
-  .cab-art, .cab-art.on .cab-ico svg > * { transition: none; animation: none; stroke-dashoffset: 0; }
+  .btn-border::before, .eyebrow .dot, .status .led, .cab-dial .spin { animation: none; }
+  .cab-plate, .cab-plate.ready.on, .cab-plate.ready.off, .cab-dial .hand, .cab-mark, .cab-item { transition: none; animation: none; }
+  .cab-dial .arc { display: none; }
   .scroll-progress { display: none; }
   .index, .index-list li { transition: none; }
 }
@@ -510,9 +563,10 @@ kbd { font-family: var(--mono); font-size: 11px; color: var(--ink-2); background
   /* off the clock: every caption stays visible, so the list never changes
      height while the dial turns through the interests */
   .cabinet { gap: 14px; }
-  .cab-stage { max-width: 200px; }
+  .cab-figure { max-width: 270px; }
+  .cab-cap { margin-top: 18px; min-height: 0; }
   .cab-item { padding: 8px 0; }
-  .cab-item.on { padding-left: 12px; }
+  .cab-item.on { padding-left: 14px; }
   .cab-name { font-size: 1.7rem; }
   .cab-item .cab-note, .cab-item:not(.on) .cab-note { display: block; opacity: 1; transform: none; font-size: 13.5px; color: var(--ink-3); }
   .cab-item.on .cab-note { color: var(--ink-2); }
