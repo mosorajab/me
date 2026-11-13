@@ -33,6 +33,7 @@
   --gutter: clamp(20px, 5vw, 88px);
   --maxw: 1320px;
   --nav-h: 64px;
+  --sec-gap: clamp(40px, 6.5vh, 72px);   /* equal space above and below each section divider */
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --ease-io:  cubic-bezier(.62, .04, .34, 1);
 }
@@ -57,7 +58,7 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
 body {
   margin: 0; overflow-x: hidden;
   background: radial-gradient(1100px 700px at 85% -10%, var(--glow), transparent 62%), var(--bg);
@@ -251,10 +252,12 @@ body.index-open { overflow: hidden; }
 /* =========================================================================
    SECTIONS
    ========================================================================= */
-.section { padding-top: clamp(40px, 6.5vh, 72px); margin-top: clamp(40px, 6.5vh, 72px); }
+.section { padding-top: var(--sec-gap); }
 /* a simple hairline divides one section from the next */
-.section:not(.contact)::before { content: ""; display: block; height: 1px; background: var(--hair); width: min(calc(100% - 2 * var(--gutter)), calc(var(--maxw) - 2 * var(--gutter))); margin: 0 auto clamp(40px, 6.5vh, 72px); }
-section[id] { scroll-margin-top: calc(var(--nav-h) - 30px); }
+.section:not(.contact)::before { content: ""; display: block; height: 1px; background: var(--hair); width: min(calc(100% - 2 * var(--gutter)), calc(var(--maxw) - 2 * var(--gutter))); margin: 0 auto var(--sec-gap); }
+/* a jumped-to section lands with its divider just under the top bar */
+section[id] { scroll-margin-top: calc(var(--nav-h) + 12px - var(--sec-gap)); }
+.contact { scroll-margin-top: var(--nav-h); }
 .sec-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 12px clamp(18px, 3vw, 36px); margin-bottom: clamp(36px, 6vh, 60px); }
 .sec-head .label .n { color: var(--accent); margin-right: 10px; font-family: var(--mono); letter-spacing: 0; }
 .sec-title { margin: 12px 0 0; font-family: var(--display); font-weight: 400; font-size: clamp(2.3rem, 4.6vw, 4.1rem); line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance; }
@@ -362,7 +365,7 @@ section[id] { scroll-margin-top: calc(var(--nav-h) - 30px); }
 .cab-ico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: .9; stroke-linecap: round; stroke-linejoin: round; }
 .cab-art.on .cab-ico svg > * { stroke-dasharray: 1; stroke-dashoffset: 1; animation: cabDraw 1.4s var(--ease-out) forwards; }
 @keyframes cabDraw { to { stroke-dashoffset: 0; } }
-.cab-count { position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%); font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); }
+.cab-count { position: absolute; left: 50%; bottom: 27%; transform: translateX(-50%); font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); }
 .cab-list { list-style: none; margin: 0; padding: 0; }
 .cab-item { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: clamp(8px, 1.4vh, 13px) 0; background: none; border: 0; color: inherit; text-align: left; cursor: pointer; font: inherit; transition: padding-left .45s var(--ease-out); }
 .cab-name { font-family: var(--display); font-size: clamp(1.8rem, 3.1vw, 2.7rem); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink-3); transition: color .4s ease; }
@@ -445,4 +448,92 @@ kbd { font-family: var(--mono); font-size: 11px; color: var(--ink-2); background
   .cab-art, .cab-art.on .cab-ico svg > * { transition: none; animation: none; stroke-dashoffset: 0; }
   .scroll-progress { display: none; }
   .index, .index-list li { transition: none; }
+}
+
+/* =========================================================================
+   PHONES — rhythm, reading order and scroll comfort
+   ========================================================================= */
+@media (max-width: 760px) {
+  :root { --sec-gap: 36px; }
+  body { font-size: 16.5px; }
+  .sec-head { gap: 6px; margin-bottom: 22px; }
+  .sec-title { margin-top: 6px; font-size: clamp(2rem, 9.2vw, 2.45rem); }
+  .sec-sub { font-size: 1.08rem; margin: 2px 0 0; }
+
+  /* hero: a little shorter, so the headline and the buttons arrive sooner */
+  .hero-art { height: 46svh; margin-bottom: -4svh; }
+  .hero-copy { padding-bottom: 18px; }
+  .eyebrow { margin-bottom: 14px; }
+  .hero-name { margin-bottom: 10px; }
+  .hero-sub { margin-top: 16px; font-size: 1.02rem; }
+  .hero-cta { margin-top: 22px; }
+  .hero { padding-bottom: 8px; }
+  .hero-links { gap: 0 20px; }
+  .hero-links .hl { padding: 12px 0 2px; }
+  .hl-name { font-size: 1.25rem; }
+
+  /* artwork: one wide crop above the text, the same everywhere, so each
+     section opens with a picture and then reads straight down */
+  .about-grid, .proj-feature, .feature { gap: 20px; }
+  .about-grid .plate, .feature .plate, .proj-feature .plate { max-width: none; width: 100%; justify-self: stretch; }
+  .proj-feature .plate { order: -1; }
+  .plate-frame { padding: 6px; }
+  .plate-frame img { aspect-ratio: 16 / 10; object-fit: cover; }
+  .about-grid .plate-frame img { object-position: 50% 36%; }
+  .proj-feature .plate-frame img { object-position: 50% 42%; }
+  .feature .plate-frame img { object-position: 50% 20%; }
+  .plate figcaption { margin-top: 8px; font-size: 12px; }
+
+  .about-statement { font-size: 1.55rem; margin-bottom: 16px; }
+  .skills { margin-top: 24px; gap: 10px 20px; }
+  .skills li { font-size: 15px; }
+
+  .proj-feature .pf-title { font-size: clamp(2.4rem, 12vw, 3rem); }
+  .proj-feature .pf-desc { margin-top: 12px; font-size: 1.02rem; }
+  .proj-feature .pf-row { margin-top: 18px; gap: 14px; }
+  .proj-list { margin-top: 36px; gap: 26px; }
+  .proj { padding-top: 16px; }
+  .proj h3 { margin-top: 12px; }
+  .proj .flow { padding-top: 14px; }
+
+  .feature-copy { gap: 10px; }
+  .f-title { font-size: clamp(2.2rem, 11vw, 2.8rem); }
+  .f-desc { font-size: 1.15rem; }
+  .post-list { margin-top: 26px; }
+  .post { padding: 13px 0; }
+
+  /* off the clock: every caption stays visible, so the list never changes
+     height while the dial turns through the interests */
+  .cabinet { gap: 14px; }
+  .cab-stage { max-width: 200px; }
+  .cab-item { padding: 8px 0; }
+  .cab-item.on { padding-left: 12px; }
+  .cab-name { font-size: 1.7rem; }
+  .cab-item .cab-note, .cab-item:not(.on) .cab-note { display: block; opacity: 1; transform: none; font-size: 13.5px; color: var(--ink-3); }
+  .cab-item.on .cab-note { color: var(--ink-2); }
+
+  .bg-wrap { gap: 20px; }
+  .bg-list li { padding: 12px 0; }
+
+  .contact { margin-top: 36px; padding-top: 44px; padding-bottom: 52px; }
+  .contact-grid { gap: 22px; }
+  .contact-lead p { margin-bottom: 18px; font-size: 1.05rem; }
+  .contact-links a { padding: 12px 0; }
+  .contact-links .v { font-size: 1.2rem; }
+
+  .colophon { gap: 20px; padding-top: 32px; padding-bottom: 104px; }
+}
+
+/* touch screens: lighter reveal animations (no blur, which is costly while scrolling) */
+@media (max-width: 900px), (pointer: coarse) {
+  .reveal { filter: none; transform: translateY(14px); transition: opacity .7s var(--ease-out), transform .8s var(--ease-out); }
+  .stg { filter: none; transform: translateY(12px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); transition-delay: calc(var(--si, 0) * 1ms); }
+  .hero-headline .word > span { filter: none; transform: translateY(10px); }
+  .index-list li { filter: none; }
+}
+
+/* the dock is solid on phones (no blur) and tucks away while reading downwards */
+@media (max-width: 640px) {
+  .dock { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--bg-2); box-shadow: 0 0 0 1px var(--hair), 0 14px 34px -14px oklch(0 0 0 / 0.6); }
+  .dock.show.tuck { transform: translateY(160%); }
 }

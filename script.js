@@ -221,14 +221,22 @@
   var sections = jumpTo.map(function (id) { return document.getElementById(id); }).filter(Boolean);
   var spyLinks = qsa("[data-spy]");
   var hero = document.getElementById("hero");
-  var activeId = null, queued = false;
+  var activeId = null, queued = false, lastY = 0;
   function onScroll() {
     queued = false;
     var y = window.scrollY || docEl.scrollTop;
     var vh = window.innerHeight || 800;
     var max = docEl.scrollHeight - docEl.clientHeight;
     if (prog) prog.style.transform = "scaleX(" + (max > 0 ? clamp(y / max, 0, 1) : 0) + ")";
-    if (dock) dock.classList.toggle("show", y > (hero ? hero.offsetHeight * 0.35 : vh * 0.4));
+    if (dock) {
+      dock.classList.toggle("show", y > (hero ? hero.offsetHeight * 0.35 : vh * 0.4));
+      // on phones the dock tucks away while reading downwards and returns on any upward scroll
+      if (window.innerWidth <= 640) {
+        if (y > lastY + 8 && y > 320) dock.classList.add("tuck");
+        else if (y < lastY - 4 || y + vh >= docEl.scrollHeight - 80) dock.classList.remove("tuck");
+      } else dock.classList.remove("tuck");
+    }
+    lastY = y;
     var line = y + vh * 0.4, cur = null;
     sections.forEach(function (s) { if (s.offsetTop <= line) cur = s; });
     if (y + vh >= docEl.scrollHeight - 4) cur = sections[sections.length - 1];
