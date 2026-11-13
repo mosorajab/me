@@ -268,7 +268,7 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 12px - var(--sec-gap)); }
 /* plates: framed prints and paintings */
 .plate { margin: 0; }
 .plate-frame { position: relative; overflow: hidden; padding: 9px; border-radius: 3px; background: var(--print); box-shadow: 0 34px 60px -32px oklch(0 0 0 / 0.7); }
-.plate-frame img { width: 100%; transition: transform 1.2s var(--ease-out); }
+.plate-frame img { width: 100%; background: var(--print); transition: transform 1.2s var(--ease-out); }
 .plate figcaption { margin-top: 12px; font-size: 12.5px; color: var(--ink-3); }
 .plate figcaption em { font-family: var(--display); font-size: 14.5px; color: var(--ink-2); }
 .plate .cap-note { display: block; }
@@ -433,16 +433,21 @@ kbd { font-family: var(--mono); font-size: 11px; color: var(--ink-2); background
 /* =========================================================================
    MOTION
    ========================================================================= */
-.reveal { opacity: 0; transform: translateY(24px); filter: blur(8px); transition: opacity 1s var(--ease-out), transform 1.1s var(--ease-out), filter 1s var(--ease-out); }
-.reveal.in { opacity: 1; transform: none; filter: none; }
-.reveal[data-d="1"] { transition-delay: .08s; } .reveal[data-d="2"] { transition-delay: .16s; }
-.reveal[data-d="3"] { transition-delay: .24s; } .reveal[data-d="4"] { transition-delay: .32s; }
-.stg { opacity: 0; transform: translateY(18px); filter: blur(6px); transition: opacity .8s var(--ease-out), transform .8s var(--ease-out), filter .8s var(--ease-out); transition-delay: calc(var(--si, 0) * 1ms); }
-.stg.shown { opacity: 1; transform: none; filter: none; }
+/* Hidden only when script is running (the .js class is set in the head), so
+   a failed script can never leave content invisible. Transform and opacity
+   only: both are composited, so they stay smooth while the page scrolls. */
+.js .reveal:not(.in) { opacity: 0; transform: translate3d(0, 22px, 0); will-change: opacity, transform; }
+.reveal { transition: opacity .8s var(--ease-out), transform .9s var(--ease-out); }
+.reveal[data-d="1"] { transition-delay: .06s; } .reveal[data-d="2"] { transition-delay: .12s; }
+.reveal[data-d="3"] { transition-delay: .18s; } .reveal[data-d="4"] { transition-delay: .24s; }
+.stg { transition: opacity .7s var(--ease-out), transform .8s var(--ease-out); transition-delay: calc(var(--si, 0) * 1ms); }
+.js .stg:not(.shown) { opacity: 0; transform: translate3d(0, 16px, 0); will-change: opacity, transform; }
+.instant, .instant.stg { transition: none !important; transition-delay: 0s !important; }
 @media (prefers-reduced-motion: reduce) {
   .nav { animation: none; transform: none; }
   .hero-art img { animation: none; opacity: 1; }
-  .reveal, .stg { opacity: 1; transform: none; filter: none; transition: none; }
+  .js .reveal:not(.in), .js .stg:not(.shown) { opacity: 1; transform: none; will-change: auto; }
+  .reveal, .stg { transition: none; }
   .hero-headline .word > span { opacity: 1; transform: none; filter: none; transition: none; }
   .btn-border::before, .eyebrow .dot, .status .led, .cab-ring { animation: none; }
   .cab-art, .cab-art.on .cab-ico svg > * { transition: none; animation: none; stroke-dashoffset: 0; }
@@ -524,11 +529,13 @@ kbd { font-family: var(--mono); font-size: 11px; color: var(--ink-2); background
   .colophon { gap: 20px; padding-top: 32px; padding-bottom: 104px; }
 }
 
-/* touch screens: lighter reveal animations (no blur, which is costly while scrolling) */
+/* touch screens: a shorter, gentler rise */
 @media (max-width: 900px), (pointer: coarse) {
-  .reveal { filter: none; transform: translateY(14px); transition: opacity .7s var(--ease-out), transform .8s var(--ease-out); }
-  .stg { filter: none; transform: translateY(12px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); transition-delay: calc(var(--si, 0) * 1ms); }
-  .hero-headline .word > span { filter: none; transform: translateY(10px); }
+  .js .reveal:not(.in) { transform: translate3d(0, 14px, 0); }
+  .js .stg:not(.shown) { transform: translate3d(0, 10px, 0); }
+  .reveal { transition: opacity .6s var(--ease-out), transform .7s var(--ease-out); }
+  .stg { transition: opacity .5s var(--ease-out), transform .55s var(--ease-out); transition-delay: calc(var(--si, 0) * 1ms); }
+  .hero-headline .word > span { filter: none; transform: translate3d(0, 10px, 0); }
   .index-list li { filter: none; }
 }
 

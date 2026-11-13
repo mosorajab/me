@@ -103,7 +103,7 @@
       }
     });
     hl.innerHTML = out.join("");
-    qsa(".word > span", hl).forEach(function (w, i) { w.style.transitionDelay = (0.25 + i * 0.09) + "s"; });
+    qsa(".word > span", hl).forEach(function (w, i) { w.style.transitionDelay = (0.2 + i * 0.07) + "s"; });
     requestAnimationFrame(function () { requestAnimationFrame(function () { hl.classList.add("words-in"); }); });
   }
 
@@ -158,38 +158,83 @@
     }
   })();
 
-  /* ---- staggered groups ---------------------------------------------- */
-  (function setupStagger() {
-    var groups = qsa("[data-stagger]");
-    groups.forEach(function (g) {
-      var step = parseInt(g.getAttribute("data-stagger-step") || "70", 10);
-      g._kids = Array.prototype.slice.call(g.children); g._step = step;
-      if (reduce) return;
-      g._kids.forEach(function (k, i) { k.classList.add("stg"); k.style.setProperty("--si", i * step); });
-    });
-    if (reduce || !("IntersectionObserver" in window)) return;
-    function go(g) {
-      if (g._done) return; g._done = true;
-      g._kids.forEach(function (k) { k.classList.add("shown"); });
-      // clean up so hover transitions are not delayed afterwards
-      setTimeout(function () {
-        g._kids.forEach(function (k) { k.classList.remove("stg", "shown"); k.style.removeProperty("--si"); });
-      }, g._kids.length * g._step + 1100);
-    }
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { go(e.target); io.unobserve(e.target); } });
-    }, { threshold: 0.05, rootMargin: "0px 0px -8% 0px" });
-    groups.forEach(function (g) { io.observe(g); });
-  })();
+  /* ---- images: load and decode ahead of the scroll ------------------- */
+  // Two screens before an image arrives it is fetched and decoded, so it
+  // never paints in strips or flashes an empty frame as it scrolls in.
+  var lazyImgs = qsa('img[loading="lazy"]');
+  if ("IntersectionObserver" in window) {
+    var pre = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var img = e.target; pre.unobserve(img);
+        img.loading = "eager";
+        if (img.decode) img.decode().catch(function () {});
+      });
+    }, { rootMargin: "0px 0px 200% 0px" });
+    lazyImgs.forEach(function (img) { pre.observe(img); });
+  }
+  // resolves when every image inside el can paint (or after a short timeout)
+  function imagesReady(el) {
+    var imgs = qsa("img", el).filter(function (i) { return !(i.complete && i.naturalWidth); });
+    if (!imgs.length || !window.Promise) return Promise.resolve();
+    imgs.forEach(function (i) { i.loading = "eager"; });
+    return Promise.race([
+      Promise.all(imgs.map(function (i) { return i.decode ? i.decode().catch(function () {}) : Promise.resolve(); })),
+      new Promise(function (r) { setTimeout(r, 1400); })
+    ]);
+  }
 
-  /* ---- reveal on scroll ---------------------------------------------- */
+  /* ---- reveal on scroll ----------------------------------------------- */
+  // Each piece starts just before it enters the screen, so it has settled by
+  // the time you look at it. Anything already scrolled past appears at once.
+  var groups = qsa("[data-stagger]");
+  groups.forEach(function (g) {
+    var step = Math.min(parseInt(g.getAttribute("data-stagger-step") || "70", 10), 90);
+    g._kids = Array.prototype.slice.call(g.children); g._step = step;
+    if (reduce) return;
+    g._kids.forEach(function (k, i) { k.classList.add("stg"); k.style.setProperty("--si", Math.min(i * step, 320)); });
+  });
   var reveals = qsa(".reveal");
-  if (reduce || !("IntersectionObserver" in window)) reveals.forEach(function (el) { el.classList.add("in"); });
-  else {
+  if (reduce || !("IntersectionObserver" in window)) {
+    reveals.forEach(function (el) { el.classList.add("in"); });
+    groups.forEach(function (g) { g._kids.forEach(function (k) { k.classList.remove("stg"); }); });
+  } else {
+    var show = function (el, passed) {
+      if (passed) el.classList.add("instant");
+      imagesReady(el).then(function () {
+        requestAnimationFrame(function () { el.classList.add("in"); });
+      });
+    };
     var rio = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); rio.unobserve(e.target); } });
-    }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        rio.unobserve(e.target);
+        show(e.target, e.boundingClientRect.bottom < 0);
+      });
+    }, { threshold: 0, rootMargin: "0px 0px 6% 0px" });
     reveals.forEach(function (el) { rio.observe(el); });
+
+    var openGroup = function (g, passed) {
+      if (g._done) return; g._done = true;
+      if (passed) g._kids.forEach(function (k) { k.classList.add("instant"); });
+      imagesReady(g).then(function () {
+        requestAnimationFrame(function () {
+          g._kids.forEach(function (k) { k.classList.add("shown"); });
+          // clean up so hover transitions are not delayed afterwards
+          setTimeout(function () {
+            g._kids.forEach(function (k) { k.classList.remove("stg", "shown", "instant"); k.style.removeProperty("--si"); });
+          }, g._kids.length * g._step + 900);
+        });
+      });
+    };
+    var gio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        gio.unobserve(e.target);
+        openGroup(e.target, e.boundingClientRect.bottom < 0);
+      });
+    }, { threshold: 0, rootMargin: "0px 0px 4% 0px" });
+    groups.forEach(function (g) { gio.observe(g); });
   }
 
   /* ---- draw-in: icon strokes ----------------------------------------- */
